@@ -1,19 +1,19 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Page One</ion-title>
+    <ion-title></ion-title>
   </ion-navbar>
 </ion-header>
-
+<!--القرآن-->
 <ion-content padding>
- <h1>Surah</h1>
-
-<ion-list [virtualScroll]="surahs">
+<ion-list [virtualScroll]="surahs" class="surahs-listview">
   <ion-item *virtualItem="let surah">
-    {{ surah.name }}
+    <div class="surahs-listview-name">{{ surah.name }}</div>
+    <div class="surahs-listview-detail">
+      {{surah.index}} - {{surah.tname}} "{{surah.ename}}"
+    </div>
+    <div class="surahs-listview-sub-detail">
+      ayas: {{surah.ayas}} rukus: {{surah.rukus}} - {{surah.type}}
+    </div>
   </ion-item>
-
 </ion-list>
 </ion-content>

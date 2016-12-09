@@ -18,7 +18,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public quranService: QuranService) {
+  constructor(public platform: Platform, private quranService: QuranService) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
