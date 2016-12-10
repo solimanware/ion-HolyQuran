@@ -15,10 +15,14 @@
         width: 100%;
         line-height: 65px;
 
+        &:first-child {
+            padding-right: 20px;
+        }
+
         .verses-listview-bismillah {
             font-size: 2.5em;
         }
-        .verses-listview-text{
+        .verses-listview-text {
             font-size: 2.5em;
             > span {
                 font-family: 'me_quran';

@@ -5,10 +5,10 @@
 </ion-header>
 <!--القرآن-->
 <ion-content padding>
-    {{ayas.length}}
 <div [virtualScroll]="ayas" approxItemHeight="120px" approxItemWidth="100%" class="verses-listview">
-  <div class="verses-listview-item" *virtualItem="let verse">
-    <div class="verses-listview-bismillah">{{ verse.bismillah }}</div>
+  <div class="verses-listview-item" *virtualItem="let verse" 
+    (click)="bookMarkVerse(verse)" (press)="displayVerseActionSheet(verse)">
+    <div class="verses-listview-bismillah" *ngIf="verse.bismillah">{{ verse.bismillah }}</div>
     <div class="verses-listview-text">
         {{ verse.text }}<span>{{verse.aindex}}</span>
     </div>

@@ -13,11 +13,22 @@ export class VersePage {
 
     constructor(private navCtrl: NavController, private navParams: NavParams,
         private verseService: VerseService) {
-        console.log(navParams.data);
-        verseService.getBySurahId(navParams.data.index).then((verse) => {
+     }
+
+     ionViewWillEnter() {
+        console.log(this.navParams.data);
+        this.verseService.getBySurahId(this.navParams.data.index).then((verse) => {
             this.verseDetail = verse;
             this.ayas = verse.aya;
             console.log(this.ayas);
-        })
+        });
+     }
+
+     bookMarkVerse(verse) {
+         console.log(verse);
+     }
+
+     displayVerseActionSheet(verse) {
+        console.log(verse);
      }
 }
