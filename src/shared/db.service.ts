@@ -7,8 +7,6 @@ export class DbService {
     private dbName: string = 'perfect_quran_v1';
 
     constructor () {
-        console.log('localforage');
-                console.log(localforage);
 
     }   
 
@@ -17,8 +15,12 @@ export class DbService {
             storeName: store,
             name: this.dbName
         });
+                    // console.log(`setting ${key} value ${JSON.stringify(value)}`);
+
         var setPromise = storeInstance.setItem(key, value)
         .then((value: any) => {
+            // console.log('value stored');
+            // console.log(value);
             return value;
         }).catch((err: any) => {
             // we got an error

@@ -4,8 +4,10 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
-import { SurahPage } from '../pages/surah/surah';
+import { SurahPage, VersePage } from '../pages/shared';
 import { DbService, QuranService } from '../shared/shared';
+import { SurahService } from '../pages/surah/surah.service';
+import { VerseService } from '../pages/verse/verse.service';
 
 
 @NgModule({
@@ -13,7 +15,8 @@ import { DbService, QuranService } from '../shared/shared';
     MyApp,
     Page1,
     Page2,
-    SurahPage
+    SurahPage,
+    VersePage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -23,11 +26,12 @@ import { DbService, QuranService } from '../shared/shared';
     MyApp,
     Page1,
     Page2,
-    SurahPage
+    SurahPage,
+    VersePage
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DbService, QuranService
+    DbService, QuranService, SurahService, VerseService
   ]
 })
 export class AppModule {}

@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title></ion-title>
+  </ion-navbar>
+</ion-header>
+<!--القرآن-->
+<ion-content padding>
+    {{ayas.length}}
+<div [virtualScroll]="ayas" approxItemHeight="100px" class="verses-listview">
+  <div *virtualItem="let verse">
+    <div class="verses-listview-name">{{ verse.bismillah }}</div>
+    <div class="verses-listview-detail">
+        {{ verse.text }}
+    </div>
+  </div>
+</div>
+</ion-content>
