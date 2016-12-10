@@ -4,8 +4,8 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
-import { SurahPage, VersePage } from '../pages/shared';
-import { DbService, QuranService } from '../shared/shared';
+import { SurahPage, VersePage, MoreOptionsPopoverPage } from '../pages/shared';
+import { DbService, QuranService, BookmarkService } from '../shared/shared';
 import { SurahService } from '../pages/surah/surah.service';
 import { VerseService } from '../pages/verse/verse.service';
 
@@ -16,7 +16,8 @@ import { VerseService } from '../pages/verse/verse.service';
     Page1,
     Page2,
     SurahPage,
-    VersePage
+    VersePage,
+    MoreOptionsPopoverPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -27,11 +28,12 @@ import { VerseService } from '../pages/verse/verse.service';
     Page1,
     Page2,
     SurahPage,
-    VersePage
+    VersePage,
+    MoreOptionsPopoverPage
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DbService, QuranService, SurahService, VerseService
+    DbService, QuranService, BookmarkService, SurahService, VerseService
   ]
 })
 export class AppModule {}

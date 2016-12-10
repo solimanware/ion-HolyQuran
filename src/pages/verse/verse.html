@@ -1,17 +1,22 @@
 <ion-header>
   <ion-navbar>
-    <ion-title></ion-title>
+    <ion-title>{{pageTitle}}</ion-title>
+    <ion-buttons end>
+        <button ion-button (click)="presentMoreOptionsPopover($event)">
+            <ion-icon name="more"></ion-icon>
+        </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
-<!--القرآن-->
 <ion-content padding>
-<div [virtualScroll]="ayas" approxItemHeight="120px" approxItemWidth="100%" class="verses-listview">
-  <div class="verses-listview-item" *virtualItem="let verse" 
-    (click)="bookMarkVerse(verse)" (press)="displayVerseActionSheet(verse)">
+<ion-list [virtualScroll]="ayas" approxItemHeight="120px" approxItemWidth="100%" 
+    class="verses-listview list list-md">
+  <button class="verses-listview-item item item-md" *virtualItem="let verse" 
+    (click)="bookMarkVerse(verse, verseDetail)" (press)="displayVerseActionSheet(verse, verseDetail)">
     <div class="verses-listview-bismillah" *ngIf="verse.bismillah">{{ verse.bismillah }}</div>
     <div class="verses-listview-text">
         {{ verse.text }}<span>{{verse.aindex}}</span>
     </div>
-  </div>
-</div>
+  </button>
+</ion-list>
 </ion-content>

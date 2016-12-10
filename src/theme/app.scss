@@ -14,16 +14,18 @@
     .verses-listview-item {
         width: 100%;
         line-height: 65px;
+        text-align: right;
+        font-size: 3.5rem;
 
         &:first-child {
             padding-right: 20px;
         }
 
         .verses-listview-bismillah {
-            font-size: 2.5em;
+
         }
         .verses-listview-text {
-            font-size: 2.5em;
+
             > span {
                 font-family: 'me_quran';
                 margin-right: 5px;
