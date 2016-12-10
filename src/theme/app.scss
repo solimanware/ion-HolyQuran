@@ -1,14 +1,37 @@
+@font-face {
+  font-family: 'KFGQPC Uthmanic Script HAFS';
+    src: url("../assets/fonts/UthmanicHafs1 Ver09.otf") format("opentype");
+}
+@font-face {
+  font-family: 'me_quran';
+    src: url("../assets/fonts/me_quran.ttf");
+}
+
 .verses-listview {
     direction: rtl;
+    font-family: 'KFGQPC Uthmanic Script HAFS';
+
     .verses-listview-item {
         width: 100%;
-        line-height: 60px;
+        line-height: 65px;
 
         .verses-listview-bismillah {
             font-size: 2.5em;
         }
         .verses-listview-text{
             font-size: 2.5em;
+            > span {
+                font-family: 'me_quran';
+                margin-right: 5px;
+                font-size: 0.8em;
+                
+                &:before{
+                    content: '\FD3F';
+                }
+                &:after{
+                    content: '\FD3E';
+                }
+            }
         }
     }
 }

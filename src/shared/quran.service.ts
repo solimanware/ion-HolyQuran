@@ -31,6 +31,11 @@ export class QuranService {
                 this.dbService.setItem('metadata', 'suras', metaData.quran.suras);   
                 let verses = res[1];   
                 for (let i = 0; i < verses.length; i++) {
+                    let ayas = verses[i].aya;
+                    for (let j = 0; j < ayas.length; j++) {
+                        ayas[j].aindex = this.convertNumberalToArabic(ayas[j].index);
+                    }
+                    verses[i].aya = ayas;
                     this.dbService.setItem('verses', verses[i].index, verses[i]);
                 }
             },
@@ -54,5 +59,16 @@ export class QuranService {
     getVerses () {
         return this.http.get(`${this.baseUrl}quran.json`)
             .map((res: Response) => res.json());
+    }
+
+    convertNumberalToArabic (text) {
+        let arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+        let chars = text.split('');
+        for (let i = 0; i < chars.length; i++) {
+            if (/\d/.test(chars[i])) {
+                chars[i] = arabicNumbers[chars[i]];
+            }
+        }
+        return chars.join('');
     }
 }
