@@ -1,0 +1,14 @@
+.verses-listview {
+    direction: rtl;
+    .verses-listview-item {
+        width: 100%;
+        line-height: 60px;
+
+        .verses-listview-bismillah {
+            font-size: 2.5em;
+        }
+        .verses-listview-text{
+            font-size: 2.5em;
+        }
+    }
+}
