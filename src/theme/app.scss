@@ -3,10 +3,46 @@
     src: url("../assets/fonts/UthmanicHafs1 Ver09.otf") format("opentype");
 }
 @font-face {
-  font-family: 'me_quran';
+    font-family: 'me_quran';
     src: url("../assets/fonts/me_quran.ttf");
 }
+@font-face {
+    font-family: 'Open Sans';
+    src: url("../assets/fonts/OpenSans-Regular.ttf");
+}
+@font-face {
+    font-family: 'Open Sans';
+    font-weight: bold;
+    src: url("../assets/fonts/OpenSans-Bold.ttf");
+}
+ion-title{
+    text-align: center; 
+}
+.surahs-listview {
+    direction: rtl;
 
+    .surahs-listview-item {
+        overflow: visible;
+
+        .surahs-listview-name {
+            font-size: 4rem;
+            font-family: 'KFGQPC Uthmanic Script HAFS';
+            font-weight: bold;
+        }
+        .surahs-listview-detail { 
+            font-family: 'Open Sans';
+            direction: ltr;
+            text-align: right;
+            font-size: 1.8rem;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+        .surahs-listview-sub-detail { 
+            font-family: 'Open Sans';
+            font-size: 1.6rem;
+        }
+    }
+}
 .verses-listview {
     direction: rtl;
     font-family: 'KFGQPC Uthmanic Script HAFS';

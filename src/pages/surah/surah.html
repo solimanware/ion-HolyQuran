@@ -4,16 +4,17 @@
   </ion-navbar>
 </ion-header>
 <!--القرآن-->
-<ion-content padding>
-<ion-list [virtualScroll]="surahs" class="surahs-listview">
-  <button ion-item *virtualItem="let surah" (click)="goToVerses(surah)">
-    <div class="surahs-listview-name">{{ surah.name }}</div>
-    <div class="surahs-listview-detail">
+<ion-content>
+<ion-list no-lines [virtualScroll]="surahs" class="surahs-listview">
+  <button ion-item detail-none *virtualItem="let surah" approxItemHeight="125px" 
+    class="surahs-listview-item" (click)="goToVerses(surah)">
+    <h2 class="surahs-listview-name">{{ surah.name }}</h2>
+    <h3 class="surahs-listview-detail">
       {{surah.index}} - {{surah.tname}} "{{surah.ename}}"
-    </div>
-    <div class="surahs-listview-sub-detail">
+    </h3>
+    <p class="surahs-listview-sub-detail">
       ayas: {{surah.ayas}} rukus: {{surah.rukus}} - {{surah.type}}
-    </div>
+    </p>
   </button>
 </ion-list>
-</ion-content>
+</ion-content> 
