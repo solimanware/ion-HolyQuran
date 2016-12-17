@@ -4,10 +4,11 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
-import { SurahPage, VersePage, MoreOptionsPopoverPage } from '../pages/shared';
-import { DbService, QuranService, BookmarkService } from '../shared/shared';
+import { SurahPage, VersePage, MoreOptionsPopoverPage, BookmarkPage } from '../pages/shared';
+import { DbService, QuranService } from '../shared/shared';
 import { SurahService } from '../pages/surah/surah.service';
 import { VerseService } from '../pages/verse/verse.service';
+import { BookmarkService } from '../pages/bookmark/bookmark.service';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { VerseService } from '../pages/verse/verse.service';
     Page2,
     SurahPage,
     VersePage,
-    MoreOptionsPopoverPage
+    MoreOptionsPopoverPage,
+    BookmarkPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -29,7 +31,8 @@ import { VerseService } from '../pages/verse/verse.service';
     Page2,
     SurahPage,
     VersePage,
-    MoreOptionsPopoverPage
+    MoreOptionsPopoverPage,
+    BookmarkPage
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

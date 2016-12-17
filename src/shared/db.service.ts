@@ -8,16 +8,39 @@ export class DbService {
 
     constructor () {
 
-    }   
+    }  
+
+    getAllItems(storeName: string) {
+        let storeInstance = localforage.createInstance({
+            storeName: storeName,
+            name: this.dbName
+        });
+        let keyValues = [];
+        // The same code, but using ES6 Promises.
+        let allItemsPromise = storeInstance.iterate(function(value, key, iterationNumber) {
+            // Resulting key/value pair -- this callback will be executed for every item in the database
+            // console.log([key, value]);
+            keyValues.push(value)
+        }).then(function() {
+            // console.log('Iteration has completed');
+            return keyValues;
+        }).catch(function(err) {
+            // This code runs if there were any errors
+            // console.log(err);
+            return err;
+        });
+
+        return allItemsPromise;
+    } 
 
     setItem (store: string, key: string, value: any) : Promise<any>{
-        var storeInstance = localforage.createInstance({
+        let storeInstance = localforage.createInstance({
             storeName: store,
             name: this.dbName
         });
-                    // console.log(`setting ${key} value ${JSON.stringify(value)}`);
+        // console.log(`setting ${key} value ${JSON.stringify(value)}`);
 
-        var setPromise = storeInstance.setItem(key, value)
+        let setPromise = storeInstance.setItem(key, value)
         .then((value: any) => {
             // console.log('value stored');
             // console.log(value);
@@ -31,7 +54,7 @@ export class DbService {
     }
 
     getItem (store: string, key: string) : Promise<any> {
-        var storeInstance = localforage.createInstance({
+        let storeInstance = localforage.createInstance({
             storeName: store,
             name: this.dbName
         });

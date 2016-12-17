@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, PopoverController }  from 'ionic-angular';
 
 import { VerseService } from './verse.service';
-import { BookmarkService } from '../../shared/shared';
+import { BookmarkService } from '../bookmark/bookmark.service';
 import { Verse } from './verse';
 import { MoreOptionsPopoverPage } from './more-options-popover.page';
 
