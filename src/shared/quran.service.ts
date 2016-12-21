@@ -8,7 +8,7 @@ import { DbService } from './db.service';
 
 @Injectable()
 export class QuranService {
-    private baseUrl = './quran/';
+    private baseUrl = './assets/data/';
 
     constructor(private http: Http, private dbService: DbService) {
        
