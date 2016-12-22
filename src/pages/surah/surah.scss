@@ -1,0 +1,27 @@
+page-surah {
+    .surahs-listview {
+        direction: rtl;
+
+        .surahs-listview-item {
+            overflow: visible;
+
+            .surahs-listview-name {
+                font-size: 4rem;
+                font-family: 'KFGQPC Uthmanic Script HAFS';
+                font-weight: bold;
+            }
+            .surahs-listview-detail { 
+                font-family: 'Open Sans';
+                direction: ltr;
+                text-align: right;
+                font-size: 1.8rem;
+                word-wrap: break-word;
+                white-space: normal;
+            }
+            .surahs-listview-sub-detail { 
+                font-family: 'Open Sans';
+                font-size: 1.6rem;
+            }
+        }
+    }
+}
