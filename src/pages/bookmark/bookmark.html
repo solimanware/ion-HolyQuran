@@ -4,16 +4,26 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-<ion-list no-lines class="bookmarks-listview">
-  <button ion-item detail-none *ngFor="let bookmark of bookmarks" class="bookmarks-listview-item">
-    <h2 class="bookmarks-listview-name-ar">
-      <span class="sura-no">{{bookmark.sura.aindex}}</span>:<span class="aya-no">{{bookmark.aindex}}</span>
-      <span class="sura">{{bookmark.sura.name}}</span>:<span class="aya">{{bookmark.aindex}}</span>
-    </h2>
-    <!--<h3 class="bookmarks-listview-name-en">
-      <span class="sura-no">{{bookmark.sura.index}}</span>:<span class="aya-no">{{bookmark.index}}</span>
-      <span class="sura">{{bookmark.sura.aindex}}</span>:<span class="aya">{{bookmark.aindex}}</span>
-    </h3>-->
+  <ion-list no-lines class="bookmarks-listview">
+    <button ion-item detail-none *ngFor="let bookmark of bookmarks" class="bookmarks-listview-item">
+    <h2>
+    <ion-grid>
+      <ion-row>
+        <ion-col width-50>
+          <div class="bookmarks-listview-index">
+            <div class="bookmarks-listview-index-ar">{{bookmark.sura.aindex}}:{{bookmark.aindex}}</div>
+            <div class="bookmarks-listview-index-en">{{bookmark.sura.index}}:{{bookmark.index}}</div>
+          </div>
+        </ion-col>
+        <ion-col width-50>
+          <div class="bookmarks-listview-name">
+            <div class="bookmarks-listview-name-ar">{{bookmark.sura.name}}</div>
+            <div class="bookmarks-listview-name-en">{{bookmark.sura.tname}}</div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </h2>
   </button>
-</ion-list>
-</ion-content> 
+  </ion-list>
+</ion-content>
