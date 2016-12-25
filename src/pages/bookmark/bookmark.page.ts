@@ -12,11 +12,13 @@ export class BookmarkPage {
     public bookmarks: Array<Bookmark> = [];
 
     constructor(private navCtrl: NavController, private bookmarkService: BookmarkService) {
-        bookmarkService.getAll().then((bookmarks: any) => {
+        
+     }
+
+    ionViewWillEnter() {
+        this.bookmarkService.getAll().then((bookmarks: any) => {
             console.log(bookmarks);
             this.bookmarks = bookmarks;
         });
      }
-
-    
 }

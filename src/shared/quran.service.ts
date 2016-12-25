@@ -28,11 +28,11 @@ export class QuranService {
                 this.dbService.setItem('metadata', 'pages', metaData.quran.pages);
                 this.dbService.setItem('metadata', 'rukus', metaData.quran.rukus);
                 this.dbService.setItem('metadata', 'sajdas', metaData.quran.sajdas);
-                // for(let sr = 0; sr < metaData.quran.suras.sura.length; sr++){
-                //     let sura = metaData.quran.suras.sura[sr];
-                //     sura.aindex = this.convertNumberalToArabic(sura.index);
-                //     metaData.quran.suras.sura[sr] = sura;
-                // }
+                for(let sr = 0; sr < metaData.quran.suras.sura.length; sr++){
+                    let sura = metaData.quran.suras.sura[sr];
+                    sura.aindex = this.convertNumberalToArabic(sura.index);
+                    metaData.quran.suras.sura[sr] = sura;
+                }
                 this.dbService.setItem('metadata', 'suras', metaData.quran.suras);   
                 let verses = res[1];   
                 for (let i = 0; i < verses.length; i++) {

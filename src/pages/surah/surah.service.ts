@@ -17,4 +17,11 @@ export class SurahService {
             return result.sura;
         });
     }
+
+    getById(index){
+        return this.getAll().then(suras => {
+            let sura = suras.find(sura => sura.index == index);
+            return sura;
+        });
+    }
 }

@@ -5,9 +5,15 @@
 </ion-header>
 <ion-content>
 <ion-list no-lines class="bookmarks-listview">
-  <button ion-item detail-none *ngFor="let bookmark of bookmarks" 
-    class="bookmarks-listview-item">
-    <h2 class="bookmarks-listview-name">{{ bookmark.text }}</h2>
+  <button ion-item detail-none *ngFor="let bookmark of bookmarks" class="bookmarks-listview-item">
+    <h2 class="bookmarks-listview-name-ar">
+      <span class="sura-no">{{bookmark.sura.aindex}}</span>:<span class="aya-no">{{bookmark.aindex}}</span>
+      <span class="sura">{{bookmark.sura.name}}</span>:<span class="aya">{{bookmark.aindex}}</span>
+    </h2>
+    <!--<h3 class="bookmarks-listview-name-en">
+      <span class="sura-no">{{bookmark.sura.index}}</span>:<span class="aya-no">{{bookmark.index}}</span>
+      <span class="sura">{{bookmark.sura.aindex}}</span>:<span class="aya">{{bookmark.aindex}}</span>
+    </h3>-->
   </button>
 </ion-list>
 </ion-content> 
