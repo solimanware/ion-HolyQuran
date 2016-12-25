@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 
 import { SurahService } from './surah.service';
 import { VersePage } from '../verse/verse.page';
+import { VerseParams } from '../verse/verse';
 
 @Component({
     selector: 'page-surah',
@@ -16,9 +17,14 @@ export class SurahPage {
             console.log(surahs);
             this.surahs = surahs;
         });
-     }
+    }
 
-     goToVerses (surah) {
-         this.navCtrl.push(VersePage, surah);
-     }
+    goToVerses(sura) {
+        let params: VerseParams = {
+            suraIndex: sura.index,
+            suraName : sura.name
+        };
+
+        this.navCtrl.push(VersePage, params);
+    }
 }

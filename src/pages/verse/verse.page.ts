@@ -3,7 +3,7 @@ import { NavController, NavParams, ActionSheetController, PopoverController }  f
 
 import { VerseService } from './verse.service';
 import { BookmarkService } from '../bookmark/bookmark.service';
-import { Verse } from './verse';
+import { Verse, VerseParams } from './verse';
 import { MoreOptionsPopoverPage } from './more-options-popover.page';
 
 @Component({
@@ -14,6 +14,7 @@ export class VersePage {
     public verseDetail: any;
     public ayas: Array<Object> = [];
     public pageTitle = '';
+    private verseParams: VerseParams;
 
     constructor(private navCtrl: NavController, private navParams: NavParams,
         private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
@@ -22,9 +23,10 @@ export class VersePage {
 
      ionViewWillEnter() {
         console.log(this.navParams.data);
-        this.verseService.getBySurahId(this.navParams.data.index).then((verse) => {
+        this.verseParams = this.navParams.data;
+        this.verseService.getBySurahId(this.verseParams.suraIndex).then((verse) => {
             this.verseDetail = verse;
-            this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.navParams.data.name} - ${this.verseDetail.ajuz} جزء‎‎`;
+            this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
             this.ayas = verse.aya;
         });
      }

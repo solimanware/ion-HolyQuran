@@ -2,19 +2,23 @@ page-bookmark {
     .bookmarks-listview {
         .bookmarks-listview-item {
             .bookmarks-listview-name {
-                .bookmarks-listview-name-ae {
+                text-align: right;
+                .bookmarks-listview-name-en {
+                    // font-size: 1.2em;
                 }
                 .bookmarks-listview-name-ar {
-                    
+                    // font-size: 2.5em;
                 }
             }
 
             .bookmarks-listview-index {
-                .bookmarks-listview-index-ar {
+                text-align: left;
 
+                .bookmarks-listview-index-ar {
+                    // font-size: 2.5em;
                 }
                 .bookmarks-listview-index-en {
-                    
+                    // font-size: 1.2em;
                 }
             }
         }

@@ -3,3 +3,9 @@ export interface Verse {
     index: string,
     text: string
 }
+
+export interface VerseParams {
+    suraIndex: number,
+    suraName: string,
+    verseIndex?: number
+}
