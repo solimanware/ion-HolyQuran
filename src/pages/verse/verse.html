@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{pageTitle}}-{{viewmode}}</ion-title>
+    <ion-title>{{pageTitle}}</ion-title>
     <ion-buttons end>
         <button ion-button (click)="presentMoreOptionsPopover($event)">
             <ion-icon name="more"></ion-icon>
@@ -9,10 +9,10 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <ion-list [virtualScroll]="ayas" approxItemHeight="120px" approxItemWidth="100%"  
+  <ion-list [virtualScroll]="ayas" approxItemHeight="120px" approxItemWidth="100%" [bufferRatio]="bufferRatio"  
       class="verses-listview list list-md">
     <button class="verses-listview-item item item-md" *virtualItem="let verse" 
-      (click)="bookMarkVerse(verse, verseDetail)" (press)="displayVerseActionSheet(verse, verseDetail)">
+      (click)="bookMarkVerse(verse, verseDetail)" (press)="displayVerseActionSheet(verse, verseDetail)" [id]="'verse_' + verse.index">
       <!--<div class="verses-listview-bismillah" *ngIf="verse.bismillah">{{ verse.bismillah }}</div>-->
       <div class="verses-listview-text">
           <!--{{ verse.text }}<span>{{verse.aindex}}</span>-->My Text

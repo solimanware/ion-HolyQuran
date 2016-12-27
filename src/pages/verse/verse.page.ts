@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Content, NavController, NavParams, ActionSheetController, PopoverController }  from 'ionic-angular';
 
 import { VerseService } from './verse.service';
@@ -16,10 +16,10 @@ export class VersePage {
     public verseDetail: any;
     public ayas: Array<Object> = [];
     public pageTitle = '';
-    public viewmode = '1';
+    public bufferRatio = 3;
     private verseParams: VerseParams;
 
-    constructor(private navCtrl: NavController, private navParams: NavParams,
+    constructor(private el: ElementRef, private navCtrl: NavController, private navParams: NavParams,
         private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
         private verseService: VerseService, private bookmarkService: BookmarkService) {
             this.verseParams = this.navParams.data;
@@ -27,10 +27,6 @@ export class VersePage {
 
      ionViewWillEnter() {
         console.log(this.navParams.data);
-        if(this.verseParams.verseIndex != null){
-            //change viewmode as virtual list view doest support scrollTo
-            this.viewmode = '2';
-        }
         this.verseService.getBySurahId(this.verseParams.suraIndex).then((verse) => {
             this.verseDetail = verse;
             // this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
@@ -42,9 +38,12 @@ export class VersePage {
             console.log('firing');
         }).then(() => {
             console.log('complete');
+            let indexToFind = this.ayas.findIndex((x:Verse) => x.index == this.verseParams.verseIndex.toString());
+            console.log('index='+indexToFind);
+            this.bufferRatio = indexToFind/3;
             setTimeout(() => {
-                this.scrollTo(26);
-            },5000);
+                this.scrollTo(this.verseParams.verseIndex);
+            },2000);
         });
      }
 
@@ -75,7 +74,8 @@ export class VersePage {
         console.log(verseKey);
         let element = document.getElementById(verseKey);
         console.log(element);
-        // let yOffset = document.getElementById('verse_' + verseIndex).offsetTop;
+        let yOffset = element.offsetTop;
+        console.log(yOffset);
         // this.content.scrollTo(0, yOffset, 4000)
     }
 
