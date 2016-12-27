@@ -31,11 +31,6 @@ export class BookmarkService {
                 index: verse.index,
                 text: verse.text,
                 sura: sura
-                // sura: {
-                //     index: verseDetail.index,
-                //     aindex: verseDetail.aindex,
-                //     name: verseDetail.name
-                // }
             };
             return this.dbService.setItem(this.storeName, surahVerseKey, bookmark);
         });

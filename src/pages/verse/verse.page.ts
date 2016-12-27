@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, PopoverController }  from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Content, NavController, NavParams, ActionSheetController, PopoverController }  from 'ionic-angular';
 
 import { VerseService } from './verse.service';
 import { BookmarkService } from '../bookmark/bookmark.service';
@@ -11,25 +11,46 @@ import { MoreOptionsPopoverPage } from './more-options-popover.page';
     templateUrl: 'verse.html'
 })
 export class VersePage {
+    @ViewChild(Content) content: Content;
+
     public verseDetail: any;
     public ayas: Array<Object> = [];
     public pageTitle = '';
+    public viewmode = '1';
     private verseParams: VerseParams;
 
     constructor(private navCtrl: NavController, private navParams: NavParams,
         private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
         private verseService: VerseService, private bookmarkService: BookmarkService) {
+            this.verseParams = this.navParams.data;
      }
 
      ionViewWillEnter() {
         console.log(this.navParams.data);
-        this.verseParams = this.navParams.data;
+        if(this.verseParams.verseIndex != null){
+            //change viewmode as virtual list view doest support scrollTo
+            this.viewmode = '2';
+        }
         this.verseService.getBySurahId(this.verseParams.suraIndex).then((verse) => {
             this.verseDetail = verse;
-            this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
+            // this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
             this.ayas = verse.aya;
+            if(this.verseParams.verseIndex != null){
+                //scroll to verse
+                //this.content.scrollTo()
+            }
+            console.log('firing');
+        }).then(() => {
+            console.log('complete');
+            setTimeout(() => {
+                this.scrollTo(26);
+            },5000);
         });
      }
+
+    ionViewDidEnter() {
+
+    }
 
      bookMarkVerse(verse: Verse, verseDetail) {
          console.log(verseDetail);
@@ -48,6 +69,15 @@ export class VersePage {
             ev: event
         });
      }
+
+     private scrollTo(verseIndex) {
+        let verseKey = 'verse_' + verseIndex;
+        console.log(verseKey);
+        let element = document.getElementById(verseKey);
+        console.log(element);
+        // let yOffset = document.getElementById('verse_' + verseIndex).offsetTop;
+        // this.content.scrollTo(0, yOffset, 4000)
+    }
 
      private presentVerseActionSheet(verse: Verse, verseDetail) {
         let actionSheet = this.actionSheetCtrl.create({
