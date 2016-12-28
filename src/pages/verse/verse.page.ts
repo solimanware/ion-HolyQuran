@@ -74,7 +74,8 @@ export class VersePage {
         let hElement: HTMLElement = this.elRef.nativeElement;
         let element = hElement.querySelector(verseKey);
         let offset = this.getElementOffset(element);
-        this.renderer.setElementAttribute(element, "class", "selected");
+        let oldClasses = element.getAttribute('class');
+        this.renderer.setElementAttribute(element, "class", oldClasses + ' verse-selected');
         console.log(offset);
         this.content.scrollTo(0, offset.top)
         //change back buffer ratio to gain performance back
