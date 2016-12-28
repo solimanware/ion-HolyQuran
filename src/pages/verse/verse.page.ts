@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { Content, NavController, NavParams, ActionSheetController, PopoverController }  from 'ionic-angular';
 
 import { VerseService } from './verse.service';
@@ -19,8 +19,8 @@ export class VersePage {
     public bufferRatio = 3;
     private verseParams: VerseParams;
 
-    constructor(private el: ElementRef, private navCtrl: NavController, private navParams: NavParams,
-        private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
+    constructor(private elRef: ElementRef, private renderer: Renderer, private navCtrl: NavController, 
+    private navParams: NavParams, private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
         private verseService: VerseService, private bookmarkService: BookmarkService) {
             this.verseParams = this.navParams.data;
      }
@@ -40,10 +40,13 @@ export class VersePage {
             console.log('complete');
             let indexToFind = this.ayas.findIndex((x:Verse) => x.index == this.verseParams.verseIndex.toString());
             console.log('index='+indexToFind);
-            this.bufferRatio = indexToFind/3;
+            let countedBufferRatio = indexToFind/3;
+            if(countedBufferRatio > this.bufferRatio){
+                this.bufferRatio = countedBufferRatio;
+            }
             setTimeout(() => {
                 this.scrollTo(this.verseParams.verseIndex);
-            },2000);
+            },1000);
         });
      }
 
@@ -70,14 +73,26 @@ export class VersePage {
      }
 
      private scrollTo(verseIndex) {
-        let verseKey = 'verse_' + verseIndex;
+        let verseKey = '#verse_' + verseIndex;
         console.log(verseKey);
-        let element = document.getElementById(verseKey);
-        console.log(element);
-        let yOffset = element.offsetTop;
-        console.log(yOffset);
-        // this.content.scrollTo(0, yOffset, 4000)
+        let hElement: HTMLElement = this.elRef.nativeElement;
+        let element = hElement.querySelector(verseKey);
+        let test = this.getElementOffset(element);
+        this.renderer.setElementAttribute(element, "class", "selected");
+        console.log(test);
+        // let yOffset = element.offsetTop;
+        // console.log(yOffset);
+        this.content.scrollTo(0, test.top)
     }
+
+       private getElementOffset(element)
+        {
+            var de = document.documentElement;
+            var box = element.getBoundingClientRect();
+            var top = box.top + window.pageYOffset - de.clientTop;
+            var left = box.left + window.pageXOffset - de.clientLeft;
+            return { top: top, left: left };
+        }
 
      private presentVerseActionSheet(verse: Verse, verseDetail) {
         let actionSheet = this.actionSheetCtrl.create({
