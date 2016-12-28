@@ -46,13 +46,9 @@ export class VersePage {
             }
             setTimeout(() => {
                 this.scrollTo(this.verseParams.verseIndex);
-            },1000);
+            });
         });
      }
-
-    ionViewDidEnter() {
-
-    }
 
      bookMarkVerse(verse: Verse, verseDetail) {
          console.log(verseDetail);
@@ -77,12 +73,14 @@ export class VersePage {
         console.log(verseKey);
         let hElement: HTMLElement = this.elRef.nativeElement;
         let element = hElement.querySelector(verseKey);
-        let test = this.getElementOffset(element);
+        let offset = this.getElementOffset(element);
         this.renderer.setElementAttribute(element, "class", "selected");
-        console.log(test);
-        // let yOffset = element.offsetTop;
-        // console.log(yOffset);
-        this.content.scrollTo(0, test.top)
+        console.log(offset);
+        this.content.scrollTo(0, offset.top)
+        //change back buffer ratio to gain performance back
+        setTimeout(() => {
+            this.bufferRatio = 3;            
+        });
     }
 
        private getElementOffset(element)
