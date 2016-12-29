@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { default as localforage } from "localforage";
+import _ from 'lodash';
 
 @Injectable()
 export class DbService {
