@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
-import { Content, NavController, NavParams, ActionSheetController, PopoverController }  from 'ionic-angular';
+import { Content, NavController, NavParams, ActionSheetController, PopoverController, LoadingController } from 'ionic-angular';
 
 import { VerseService } from './verse.service';
 import { BookmarkService } from '../bookmark/bookmark.service';
@@ -19,14 +19,19 @@ export class VersePage {
     public bufferRatio = 3;
     private verseParams: VerseParams;
 
-    constructor(private elRef: ElementRef, private renderer: Renderer, private navCtrl: NavController, 
-    private navParams: NavParams, private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
+    constructor(private elRef: ElementRef, private renderer: Renderer, private navCtrl: NavController,
+        private navParams: NavParams, private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
+        private loadingCtrl: LoadingController,
         private verseService: VerseService, private bookmarkService: BookmarkService) {
-            this.verseParams = this.navParams.data;
-     }
+        this.verseParams = this.navParams.data;
+    }
 
-     ionViewWillEnter() {
+    ionViewWillEnter() {
         console.log(this.navParams.data);
+        let loader = this.loadingCtrl.create({
+            content: "Please wait..."
+        });
+        loader.present();
         this.verseService.getBySurahId(this.verseParams.suraIndex).then((verse) => {
             this.verseDetail = verse;
             // this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
@@ -38,40 +43,43 @@ export class VersePage {
             console.log('firing');
         }).then(() => {
             console.log('complete');
-            if(this.verseParams.verseIndex){
+            if (this.verseParams.verseIndex) {
                 //scroll to verse
-                let indexToFind = this.ayas.findIndex((x:Verse) => x.index == this.verseParams.verseIndex.toString());
-                console.log('index='+indexToFind);
-                let countedBufferRatio = indexToFind/3;
-                if(countedBufferRatio > this.bufferRatio){
+                let indexToFind = this.ayas.findIndex((x: Verse) => x.index == this.verseParams.verseIndex.toString());
+                console.log('index=' + indexToFind);
+                let countedBufferRatio = indexToFind / 3;
+                if (countedBufferRatio > this.bufferRatio) {
                     this.bufferRatio = countedBufferRatio;
                 }
                 setTimeout(() => {
                     this.scrollTo(this.verseParams.verseIndex);
+                    loader.dismiss();
                 });
+            } else {
+                loader.dismiss();
             }
         });
-     }
+    }
 
-     bookMarkVerse(verse: Verse, verseDetail) {
-         console.log(verseDetail);
-         this.bookmarkService.addVerseToBookmarks(verse, verseDetail)
+    bookMarkVerse(verse: Verse, verseDetail) {
+        console.log(verseDetail);
+        this.bookmarkService.addVerseToBookmarks(verse, verseDetail)
             .then((result: Verse) => {
             });
-     }
+    }
 
-     displayVerseActionSheet(verse: Verse, verseDetail) {
+    displayVerseActionSheet(verse: Verse, verseDetail) {
         this.presentVerseActionSheet(verse, verseDetail);
-     }
+    }
 
-     presentMoreOptionsPopover(event) {
+    presentMoreOptionsPopover(event) {
         let popover = this.popoverCtrl.create(MoreOptionsPopoverPage);
         popover.present({
             ev: event
         });
-     }
+    }
 
-     private scrollTo(verseIndex) {
+    private scrollTo(verseIndex) {
         let verseKey = '#verse_' + verseIndex;
         console.log(verseKey);
         let hElement: HTMLElement = this.elRef.nativeElement;
@@ -83,35 +91,34 @@ export class VersePage {
         this.content.scrollTo(0, offset.top)
         //change back buffer ratio to gain performance back
         setTimeout(() => {
-            this.bufferRatio = 3;            
+            this.bufferRatio = 3;
         });
     }
 
-       private getElementOffset(element)
-        {
-            var de = document.documentElement;
-            var box = element.getBoundingClientRect();
-            var top = box.top + window.pageYOffset - de.clientTop;
-            var left = box.left + window.pageXOffset - de.clientLeft;
-            return { top: top, left: left };
-        }
+    private getElementOffset(element) {
+        var de = document.documentElement;
+        var box = element.getBoundingClientRect();
+        var top = box.top + window.pageYOffset - de.clientTop;
+        var left = box.left + window.pageXOffset - de.clientLeft;
+        return { top: top, left: left };
+    }
 
-     private presentVerseActionSheet(verse: Verse, verseDetail) {
+    private presentVerseActionSheet(verse: Verse, verseDetail) {
         let actionSheet = this.actionSheetCtrl.create({
-        title: 'Choose',
-        buttons: [
-            {
-                text: 'Bookmark this',
-                handler: () => {
-                    console.log('bookmark clicked');
-                    this.bookMarkVerse(verse, verseDetail);
+            title: 'Choose',
+            buttons: [
+                {
+                    text: 'Bookmark this',
+                    handler: () => {
+                        console.log('bookmark clicked');
+                        this.bookMarkVerse(verse, verseDetail);
+                    }
+                },
+                {
+                    text: 'Cancel',
+                    role: 'cancel'
                 }
-            },
-            {
-                text: 'Cancel',
-                role: 'cancel'
-            }
-        ]
+            ]
         });
         actionSheet.present();
     }
