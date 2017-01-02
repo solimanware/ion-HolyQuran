@@ -16,6 +16,7 @@ export class DbService {
             storeName: storeName,
             name: this.dbName
         });
+        storeInstance.setDriver([localforage.INDEXEDDB, localforage.WEBSQL]);
         let keyValues = [];
         // The same code, but using ES6 Promises.
         let allItemsPromise = storeInstance.iterate(function(value, key, iterationNumber) {
@@ -39,6 +40,7 @@ export class DbService {
             storeName: store,
             name: this.dbName
         });
+        storeInstance.setDriver([localforage.INDEXEDDB, localforage.WEBSQL]);
         // console.log(`setting ${key} value ${JSON.stringify(value)}`);
 
         let setPromise = storeInstance.setItem(key, value)
@@ -59,6 +61,7 @@ export class DbService {
             storeName: store,
             name: this.dbName
         });
+        storeInstance.setDriver([localforage.INDEXEDDB, localforage.WEBSQL]);
         return storeInstance.getItem(key);
     }
 

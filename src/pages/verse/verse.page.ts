@@ -31,22 +31,25 @@ export class VersePage {
             this.verseDetail = verse;
             // this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
             this.ayas = verse.aya;
-            if(this.verseParams.verseIndex != null){
-                //scroll to verse
-                //this.content.scrollTo()
-            }
+            // if(this.verseParams.verseIndex != null){
+            //     //scroll to verse
+            //     //this.content.scrollTo()
+            // }
             console.log('firing');
         }).then(() => {
             console.log('complete');
-            let indexToFind = this.ayas.findIndex((x:Verse) => x.index == this.verseParams.verseIndex.toString());
-            console.log('index='+indexToFind);
-            let countedBufferRatio = indexToFind/3;
-            if(countedBufferRatio > this.bufferRatio){
-                this.bufferRatio = countedBufferRatio;
+            if(this.verseParams.verseIndex){
+                //scroll to verse
+                let indexToFind = this.ayas.findIndex((x:Verse) => x.index == this.verseParams.verseIndex.toString());
+                console.log('index='+indexToFind);
+                let countedBufferRatio = indexToFind/3;
+                if(countedBufferRatio > this.bufferRatio){
+                    this.bufferRatio = countedBufferRatio;
+                }
+                setTimeout(() => {
+                    this.scrollTo(this.verseParams.verseIndex);
+                });
             }
-            setTimeout(() => {
-                this.scrollTo(this.verseParams.verseIndex);
-            });
         });
      }
 
