@@ -14,11 +14,11 @@ import { SurahPage } from '../surah/surah.page';
     templateUrl: 'quran.html'
 })
 export class QuranPage {
-    tab1: any;
-    tab2: any;
+    tabSura: any;
+    tabBookmark: any;
 
     constructor() {
-        this.tab1 = BookmarkPage;
-        // this.tab2 = SurahPage;
+        this.tabSura = SurahPage;
+        this.tabBookmark = BookmarkPage;
     }
 }
