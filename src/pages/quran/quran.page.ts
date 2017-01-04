@@ -7,6 +7,7 @@ import { Verse, VerseParams } from './verse';
 import { MoreOptionsPopoverPage } from './more-options-popover.page';
 import { BookmarkPage } from '../bookmark/bookmark.page';
 import { SurahPage } from '../surah/surah.page';
+import { JuzPage } from '../juz/juz.page';
 
 
 @Component({
@@ -15,10 +16,12 @@ import { SurahPage } from '../surah/surah.page';
 })
 export class QuranPage {
     tabSura: any;
+    tabJuz: any;
     tabBookmark: any;
 
     constructor() {
         this.tabSura = SurahPage;
+        this.tabJuz = JuzPage;
         this.tabBookmark = BookmarkPage;
     }
 }

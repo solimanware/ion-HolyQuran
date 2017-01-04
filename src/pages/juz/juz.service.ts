@@ -14,7 +14,7 @@ export class JuzService {
     getAll(): Promise<any> {
         return this.dbService.getItem(this.storeName, this.tableName)
         .then((result: any) => {
-            return result.sura;
+            return result.juz;
         });
     }
 
