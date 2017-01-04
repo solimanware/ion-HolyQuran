@@ -5,7 +5,8 @@ import _ from 'lodash';
 
 @Injectable()
 export class DbService {
-    private dbName: string = 'perfect_quran_v1';
+    // private dbName: string = 'perfect_quran_v1';
+    private dbName: string = 'pq';
 
     constructor () {
 

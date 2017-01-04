@@ -6,7 +6,7 @@ import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 import { SurahPage, BookmarkPage, QuranPage } from '../pages/shared';
 
-import { QuranService }  from '../shared/shared';
+import { QuranService } from '../shared/shared';
 
 @Component({
   templateUrl: 'app.html'
@@ -14,9 +14,9 @@ import { QuranService }  from '../shared/shared';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = QuranPage;
+  rootPage: any;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
 
   constructor(public platform: Platform, private quranService: QuranService) {
     this.initializeApp();
@@ -25,7 +25,7 @@ export class MyApp {
     this.pages = [
       { title: 'Bookmark', component: BookmarkPage },
       { title: 'Page Two', component: Page2 },
-      { title: 'Surah', component: SurahPage}
+      { title: 'Surah', component: SurahPage }
     ];
 
   }
@@ -36,8 +36,10 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
 
-      this.quranService.syncData();
-      Splashscreen.hide();
+      this.quranService.syncData(() => {
+        this.rootPage = QuranPage;
+        Splashscreen.hide();
+      });
     });
   }
 
