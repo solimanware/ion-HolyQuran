@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { BookmarkService } from './bookmark.service';
@@ -10,15 +10,13 @@ import { VerseParams } from '../verse/verse';
     selector: 'page-bookmark',
     templateUrl: 'bookmark.html'
 })
-export class BookmarkPage implements OnInit {
+export class BookmarkPage {
     public bookmarks: Array<Bookmark> = [];
 
     constructor(private navCtrl: NavController, private bookmarkService: BookmarkService) {
 
     }
-    ngOnInit() {
-        this.ionViewWillEnter();
-    }
+
     ionViewWillEnter() {
         this.bookmarkService.getAll().then((bookmarks: any) => {
             console.log('bookmarks');
