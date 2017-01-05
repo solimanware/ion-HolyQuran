@@ -18,7 +18,7 @@ export class BookmarkPage {
     }
 
     ionViewWillEnter() {
-        this.bookmarkService.getAll().then((bookmarks: any) => {
+        this.bookmarkService.getAllUserBookmarks().then((bookmarks: any) => {
             console.log('bookmarks');
             console.log(bookmarks);
             this.bookmarks = bookmarks;

@@ -3,10 +3,11 @@ import { Injectable } from '@angular/core';
 // import 'rxjs/add/operator/map';
 // import 'rxjs/add/observable/forkJoin';
 
-import { Bookmark } from './bookmark';
+import { Bookmark, BookmarkType } from './bookmark';
 import { DbService } from '../../shared/db.service';
 import { Verse } from '../verse/verse';
 import { SurahService } from '../surah/surah.service';
+import _ from 'lodash';
 
 @Injectable()
 export class BookmarkService {
@@ -16,10 +17,28 @@ export class BookmarkService {
     }
 
     getAll() {
-         return this.dbService.getAllItems(this.storeName);
+        return this.dbService.getAllItems(this.storeName);
     }
 
-    addVerseToBookmarks(verse: Verse, verseDetail) {
+    getAllUserBookmarks() {
+        return this.getAll().then((bookmarks: Array<Object>) => {
+            bookmarks = _.filter(bookmarks, function (bm: Bookmark) {
+                return bm.type === BookmarkType.User;
+            });
+            return bookmarks;
+        });
+    }
+
+    getAllApplicationBookmarks() {
+        return this.getAll().then((bookmarks: Array<Object>) => {
+            bookmarks = _.filter(bookmarks, function (bm: Bookmark) {
+                return bm.type === BookmarkType.Application;
+            });
+            return bookmarks;
+        });
+    }
+
+    addVerseToBookmarks(verse: Verse, verseDetail, type?: BookmarkType) {
         // console.log(verseDetail);
         // console.log(verse);
         //get sura 
@@ -30,10 +49,11 @@ export class BookmarkService {
                 aindex: verse.aindex,
                 index: verse.index,
                 text: verse.text,
+                type: type != null ? type : BookmarkType.User,
                 sura: sura
             };
             return this.dbService.setItem(this.storeName, surahVerseKey, bookmark);
         });
-       return bookmarkPromise;
+        return bookmarkPromise;
     }
 }
