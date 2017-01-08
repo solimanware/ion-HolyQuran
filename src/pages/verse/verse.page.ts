@@ -57,7 +57,7 @@ export class VersePage {
             } else {
                 this.loader.dismiss();
                 //no bookmark ? create current sura and first verse as bookmark
-                this.bookMarkVerse(this.ayas[0], this.verseDetail, BookmarkType.Application);
+                this.bookMarkApplicationVerse(this.ayas[0], this.verseDetail);
             }
         });
     }
@@ -65,6 +65,12 @@ export class VersePage {
     bookMarkVerse(verse: Verse, verseDetail, bookmarkType: BookmarkType = BookmarkType.User) {
         console.log(verseDetail);
         this.bookmarkService.addVerseToBookmarks(verse, verseDetail, bookmarkType)
+            .then((result: Verse) => {
+            });
+    }
+
+    bookMarkApplicationVerse(verse: Verse, verseDetail) {
+        this.bookmarkService.addOrUpdateApplicationBookmark(verse, verseDetail)
             .then((result: Verse) => {
             });
     }

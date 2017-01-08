@@ -2,7 +2,7 @@ export interface Bookmark {
     aindex: string,
     index: string,
     text: string,
-    sura: Object,
+    sura: any,
     type: BookmarkType
 }
 

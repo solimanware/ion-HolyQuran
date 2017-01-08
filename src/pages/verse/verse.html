@@ -12,7 +12,7 @@
   <ion-list [virtualScroll]="ayas" approxItemHeight="120px" approxItemWidth="100%" [bufferRatio]="bufferRatio"  
       class="verses-listview list list-md">
     <button class="verses-listview-item item item-md" *virtualItem="let verse" 
-      (click)="bookMarkVerse(verse, verseDetail)" (press)="displayVerseActionSheet(verse, verseDetail)" [id]="'verse_' + verse.index">
+      (click)="bookMarkApplicationVerse(verse, verseDetail)" (press)="displayVerseActionSheet(verse, verseDetail)" [id]="'verse_' + verse.index">
       <!--<div class="verses-listview-bismillah" *ngIf="verse.bismillah">{{ verse.bismillah }}</div>-->
       <div class="verses-listview-text">
           <!--{{ verse.text }}<span>{{verse.aindex}}</span>-->My Text

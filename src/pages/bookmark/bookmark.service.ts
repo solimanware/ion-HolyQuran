@@ -38,11 +38,22 @@ export class BookmarkService {
         });
     }
 
-    addOrUpdateApplicationBookmark() {
-        this.getAllApplicationBookmarks().then((bookmarks: Array<Bookmark>) => {
-            for(let bookmark of bookmarks){
-                
+    addOrUpdateApplicationBookmark(verse: Verse, verseDetail) {
+        return this.getAllApplicationBookmarks().then((bookmarks: Array<Bookmark>) => {
+            if (bookmarks.length > 0) {
+                console.log('removing bookmark');
+                let bookmarkPromises = [];
+                for (let bookmark of bookmarks) {
+                    bookmarkPromises.push(this.removeBookmark(bookmark));
+                }
+                Promise.all(bookmarkPromises)
+                    .then(() => {
+                        this.addVerseToBookmarks(verse, verseDetail, BookmarkType.Application);
+                    });
+            } else {
+                this.addVerseToBookmarks(verse, verseDetail, BookmarkType.Application);
             }
+            return verse;
         });
     }
 
@@ -65,7 +76,9 @@ export class BookmarkService {
         return bookmarkPromise;
     }
 
-    removeBookmark() {
-        
+    removeBookmark(bookmark: Bookmark) {
+        let surahVerseKey = `${bookmark.sura.index}_${bookmark.index}`;
+        console.log('remove key: ' + surahVerseKey);
+        this.dbService.removeItem(this.storeName, surahVerseKey);
     }
 }
