@@ -38,6 +38,14 @@ export class BookmarkService {
         });
     }
 
+    addOrUpdateApplicationBookmark() {
+        this.getAllApplicationBookmarks().then((bookmarks: Array<Bookmark>) => {
+            for(let bookmark of bookmarks){
+                
+            }
+        });
+    }
+
     addVerseToBookmarks(verse: Verse, verseDetail, type?: BookmarkType) {
         // console.log(verseDetail);
         // console.log(verse);
@@ -55,5 +63,9 @@ export class BookmarkService {
             return this.dbService.setItem(this.storeName, surahVerseKey, bookmark);
         });
         return bookmarkPromise;
+    }
+
+    removeBookmark() {
+        
     }
 }

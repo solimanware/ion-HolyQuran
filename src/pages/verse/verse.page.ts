@@ -3,6 +3,7 @@ import { Content, NavController, NavParams, ActionSheetController, PopoverContro
 
 import { VerseService } from './verse.service';
 import { BookmarkService } from '../bookmark/bookmark.service';
+import { Bookmark, BookmarkType } from '../bookmark/bookmark';
 import { Verse, VerseParams } from './verse';
 import { MoreOptionsPopoverPage } from './more-options-popover.page';
 
@@ -14,32 +15,30 @@ export class VersePage {
     @ViewChild(Content) content: Content;
 
     public verseDetail: any;
-    public ayas: Array<Object> = [];
+    public ayas: Array<Verse> = [];
     public pageTitle = '';
     public bufferRatio = 3;
     private verseParams: VerseParams;
+    private loader;
 
     constructor(private elRef: ElementRef, private renderer: Renderer, private navCtrl: NavController,
         private navParams: NavParams, private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
         private loadingCtrl: LoadingController,
         private verseService: VerseService, private bookmarkService: BookmarkService) {
         this.verseParams = this.navParams.data;
+        //cache loader
+        this.loader = this.loadingCtrl.create({
+            content: "Please wait..."
+        });
     }
 
     ionViewWillEnter() {
         console.log(this.navParams.data);
-        let loader = this.loadingCtrl.create({
-            content: "Please wait..."
-        });
-        loader.present();
+        this.loader.present();
         this.verseService.getBySurahId(this.verseParams.suraIndex).then((verse) => {
             this.verseDetail = verse;
             // this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
             this.ayas = verse.aya;
-            // if(this.verseParams.verseIndex != null){
-            //     //scroll to verse
-            //     //this.content.scrollTo()
-            // }
             console.log('firing');
         }).then(() => {
             console.log('complete');
@@ -53,17 +52,19 @@ export class VersePage {
                 }
                 setTimeout(() => {
                     this.scrollTo(this.verseParams.verseIndex);
-                    loader.dismiss();
+                    this.loader.dismiss();
                 });
             } else {
-                loader.dismiss();
+                this.loader.dismiss();
+                //no bookmark ? create current sura and first verse as bookmark
+                this.bookMarkVerse(this.ayas[0], this.verseDetail, BookmarkType.Application);
             }
         });
     }
 
-    bookMarkVerse(verse: Verse, verseDetail) {
+    bookMarkVerse(verse: Verse, verseDetail, bookmarkType: BookmarkType = BookmarkType.User) {
         console.log(verseDetail);
-        this.bookmarkService.addVerseToBookmarks(verse, verseDetail)
+        this.bookmarkService.addVerseToBookmarks(verse, verseDetail, bookmarkType)
             .then((result: Verse) => {
             });
     }
