@@ -33,6 +33,8 @@ export class VersePage {
     }
 
     ionViewWillEnter() {
+        // document.getElementById("ion-header")[0].style.display = "none";
+
         console.log(this.navParams.data);
         this.loader.present();
         this.verseService.getBySurahId(this.verseParams.suraIndex).then((verse) => {

@@ -13,7 +13,10 @@ export class SurahPage {
     public surahs: Array<Object> = [];
 
     constructor(private navCtrl: NavController, private surahService: SurahService) {
-        surahService.getAll().then((surahs: any) => {
+    }
+
+    ionViewWillEnter() {
+        this.surahService.getAll().then((surahs: any) => {
             console.log(surahs);
             this.surahs = surahs;
         });
@@ -22,7 +25,7 @@ export class SurahPage {
     goToVerses(sura) {
         let params: VerseParams = {
             suraIndex: sura.index,
-            suraName : sura.name
+            suraName: sura.name
         };
 
         this.navCtrl.push(VersePage, params);

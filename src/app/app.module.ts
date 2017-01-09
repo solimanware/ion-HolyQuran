@@ -21,8 +21,10 @@ import { JuzService } from '../pages/juz/juz.service';
     JuzPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
-  ],
+    IonicModule.forRoot(MyApp, {
+      tabsHideOnSubPages: true
+    }
+    )],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
@@ -34,8 +36,8 @@ import { JuzService } from '../pages/juz/juz.service';
     JuzPage
   ],
   providers: [
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     DbService, QuranService, BookmarkService, SurahService, VerseService, JuzService
   ]
 })
-export class AppModule {}
+export class AppModule { }
