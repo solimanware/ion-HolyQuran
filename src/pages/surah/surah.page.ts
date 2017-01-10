@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { SurahService } from './surah.service';
+import { Sura } from './sura';
 import { VersePage } from '../verse/verse.page';
 import { VerseParams } from '../verse/verse';
 
@@ -10,13 +11,13 @@ import { VerseParams } from '../verse/verse';
     templateUrl: 'surah.html'
 })
 export class SurahPage {
-    public surahs: Array<Object> = [];
+    public surahs: Array<Sura> = [];
 
     constructor(private navCtrl: NavController, private surahService: SurahService) {
     }
 
     ionViewWillEnter() {
-        this.surahService.getAll().then((surahs: any) => {
+        this.surahService.getAll().then((surahs: Array<Sura>) => {
             console.log(surahs);
             this.surahs = surahs;
         });
