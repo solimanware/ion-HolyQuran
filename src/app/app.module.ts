@@ -2,7 +2,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
 import { MyApp } from './app.component';
-import { QuranPage, SurahPage, VersePage, MoreOptionsPopoverPage, BookmarkPage, JuzPage } from '../pages/shared';
+import { QuranPage, SurahPage, VersePage, MoreOptionsPopoverPage, BookmarkPage, JuzPage, SettingPage } from '../pages/shared';
 import { DbService, QuranService } from '../shared/shared';
 import { SurahService } from '../pages/surah/surah.service';
 import { VerseService } from '../pages/verse/verse.service';
@@ -18,12 +18,13 @@ import { JuzService } from '../pages/juz/juz.service';
     VersePage,
     MoreOptionsPopoverPage,
     BookmarkPage,
-    JuzPage
+    JuzPage,
+    SettingPage
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
-      tabsHideOnSubPages: true
-    }
+        tabsHideOnSubPages: true
+      }
     )],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -33,7 +34,8 @@ import { JuzService } from '../pages/juz/juz.service';
     VersePage,
     MoreOptionsPopoverPage,
     BookmarkPage,
-    JuzPage
+    JuzPage,
+    SettingPage
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },

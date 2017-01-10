@@ -18,12 +18,11 @@ export class SurahPage {
 
     ionViewWillEnter() {
         this.surahService.getAll().then((surahs: Array<Sura>) => {
-            console.log(surahs);
             this.surahs = surahs;
         });
     }
 
-    goToVerses(sura) {
+    goToVerses(sura: Sura) {
         let params: VerseParams = {
             suraIndex: sura.index,
             suraName: sura.name

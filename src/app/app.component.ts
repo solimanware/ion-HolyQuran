@@ -2,10 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
-import { Page1 } from '../pages/page1/page1';
-import { Page2 } from '../pages/page2/page2';
-import { SurahPage, BookmarkPage, QuranPage } from '../pages/shared';
-
+import { SurahPage, BookmarkPage, QuranPage, SettingPage } from '../pages/shared';
 import { QuranService } from '../shared/shared';
 
 @Component({
@@ -15,7 +12,6 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any;
-
   pages: Array<{ title: string, component: any }>;
 
   constructor(public platform: Platform, private quranService: QuranService) {
@@ -24,8 +20,8 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Bookmark', component: BookmarkPage },
-      { title: 'Page Two', component: Page2 },
-      { title: 'Surah', component: SurahPage }
+      { title: 'Surah', component: SurahPage },
+      { title: 'Settings', component: SettingPage }
     ];
 
   }
