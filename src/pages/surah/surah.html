@@ -4,11 +4,11 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-list no-lines [virtualScroll]="surahs" class="surahs-listview">
+  <ion-list no-lines [virtualScroll]="surahs" approxItemHeight="120px" approxItemWidth="100%" class="surahs-listview">
     <button ion-item detail-none *virtualItem="let surah" approxItemHeight="125px" class="surahs-listview-item" (click)="goToVerses(surah)">
     <!--<h2 class="surahs-listview-name">{{ surah.name }}</h2>-->
     <h3 class="surahs-listview-detail">
-      detail
+      detail-{{surah.index}}
       <!--{{surah.index}} - {{surah.tname}} "{{surah.ename}}"-->
     </h3>
     <p class="surahs-listview-sub-detail">
