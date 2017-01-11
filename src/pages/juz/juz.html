@@ -1,6 +1,11 @@
+<ion-header>
+  <ion-navbar>
+    <!--<ion-title>Surahs</ion-title>-->
+  </ion-navbar>
+</ion-header>
 <ion-content>
   <ion-list no-lines [virtualScroll]="juzs" class="juzs-listview">
-    <button ion-item detail-none *virtualItem="let juz" approxItemHeight="125px" class="juzs-listview-item" (click)="goToVerses(juz)">
+    <button ion-item detail-none *virtualItem="let juz" approxItemHeight="125px" class="juzs-listview-item" (click)="goToVerses($event, juz)">
     <!--<h2 class="surahs-listview-name">{{ surah.name }}</h2>-->
     <h3 class="juzs-listview-detail">
       detail

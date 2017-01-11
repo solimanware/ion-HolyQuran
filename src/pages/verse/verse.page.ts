@@ -91,7 +91,8 @@ export class VersePage {
     private scrollTo(verseIndex) {
         let verseKey = '#verse_' + verseIndex;
         console.log(verseKey);
-        let hElement: HTMLElement = this.elRef.nativeElement;
+        // let hElement: HTMLElement = this.elRef.nativeElement;
+        let hElement: HTMLElement = this.content._elementRef.nativeElement;
         let element = hElement.querySelector(verseKey);
         let offset = this.getElementOffset(element);
         let oldClasses = element.getAttribute('class');
