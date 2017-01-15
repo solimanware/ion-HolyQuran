@@ -18,20 +18,31 @@ export class BookmarkPage {
     }
 
     ionViewWillEnter() {
-        this.bookmarkService.getAllUserBookmarks().then((bookmarks: any) => {
+        this.getAllUserBookmarks();
+    }
+
+    goToVerse(bookmark: Bookmark) {
+        let params: VerseParams = {
+            suraIndex: bookmark.sura.index,
+            suraName: bookmark.sura.name,
+            verseIndex: bookmark.index
+        };
+
+        this.navCtrl.push(VersePage, params);
+    }
+
+    removeBookmark(bookmark: Bookmark) {
+        this.bookmarkService.removeBookmark(bookmark)
+            .then(() => {
+                this.getAllUserBookmarks();
+            });
+    }
+
+    private getAllUserBookmarks() {
+        return this.bookmarkService.getAllUserBookmarks().then((bookmarks: any) => {
             console.log('bookmarks');
             console.log(bookmarks);
             this.bookmarks = bookmarks;
         });
-     }
-
-     goToVerse(bookmark) {
-        let params: VerseParams = {
-            suraIndex: bookmark.sura.index,
-            suraName : bookmark.sura.name,
-            verseIndex : bookmark.index
-        };
-        
-        this.navCtrl.push(VersePage, params);
-     }
+    }
 }

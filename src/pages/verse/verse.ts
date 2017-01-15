@@ -1,6 +1,6 @@
 export interface Verse {
     aindex: string,
-    index: string,
+    index: number,
     text: string
 }
 

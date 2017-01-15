@@ -79,6 +79,6 @@ export class BookmarkService {
     removeBookmark(bookmark: Bookmark) {
         let surahVerseKey = `${bookmark.sura.index}_${bookmark.index}`;
         console.log('remove key: ' + surahVerseKey);
-        this.dbService.removeItem(this.storeName, surahVerseKey);
+        return this.dbService.removeItem(this.storeName, surahVerseKey);
     }
 }

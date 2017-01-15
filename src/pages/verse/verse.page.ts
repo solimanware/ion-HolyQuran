@@ -46,7 +46,7 @@ export class VersePage {
             console.log('complete');
             if (this.verseParams.verseIndex) {
                 //scroll to verse
-                let indexToFind = this.ayas.findIndex((x: Verse) => x.index == this.verseParams.verseIndex.toString());
+                let indexToFind = this.ayas.findIndex((x: Verse) => x.index == this.verseParams.verseIndex);
                 console.log('index=' + indexToFind);
                 let countedBufferRatio = indexToFind / 3;
                 if (countedBufferRatio > this.bufferRatio) {
