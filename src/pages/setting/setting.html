@@ -3,21 +3,19 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Page Two</ion-title>
+    <ion-title>Settings</ion-title>
   </ion-navbar>
 </ion-header>
-
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
-      <ion-icon [name]="item.icon" item-left></ion-icon>
-      {{item.title}}
-      <div class="item-note" item-right>
-        {{item.note}}
-      </div>
-    </button>
+    <ion-list-header>
+      Font
+    </ion-list-header>
+    <ion-item>
+      <ion-range min="1" max="3" step="1" snaps="true" color="primary" (ionChange)="onFontSizeChanged($event)" [(ngModel)]="fontSize">
+        <ion-label range-left class="small-text">A</ion-label>
+        <ion-label range-right>A</ion-label>
+      </ion-range>
+    </ion-item>
   </ion-list>
-  <div *ngIf="selectedItem" padding>
-    You navigated here from <b>{{selectedItem.title}}</b>
-  </div>
 </ion-content>
