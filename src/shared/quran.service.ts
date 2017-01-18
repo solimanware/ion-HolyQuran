@@ -10,7 +10,8 @@ import { DbService } from './db.service';
 export class QuranService {
     private baseUrl = './assets/data/';
 
-    constructor(private http: Http, private dbService: DbService) {
+    constructor(private http: Http
+    , private dbService: DbService) {
        
     }   
 

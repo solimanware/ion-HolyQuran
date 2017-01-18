@@ -3,13 +3,18 @@ import { Injectable } from '@angular/core';
 import { default as localforage } from "localforage";
 import _ from 'lodash';
 
+import { SchemaService } from './schema.service';
+
+declare var ydn: any; // Magic
+
 @Injectable()
 export class DbService {
     // private dbName: string = 'perfect_quran_v1';
     private dbName: string = 'pq';
 
-    constructor() {
-
+    constructor(private schemaService: SchemaService) {
+        var schema = {}; // detail later
+        new ydn.db.Storage('feature-matrix', schemaService.schema);
     }
 
     getAllItems(storeName: string) {
