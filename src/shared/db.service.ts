@@ -63,14 +63,28 @@ export class DbService {
         return setPromise;
     }
 
-    put(store: string, opts: any) {
-        let data = opts['value'];
-        if (opts['key']) {
-            this.db.put(store, data, opts['key'])
-                .done(opts['callback']);
-        } else {
-            this.db.put(store, data).done(opts['callback']);
-        }
+    putData(store: string, opts: any): Promise<any> {
+        return new Promise((resolve, reject) => {
+            let data = opts['value'];
+            if (opts['key']) {
+                this.db.put(store, data, opts['key'])
+                    .done(key => {
+                        resolve(key);
+                    });
+            } else {
+                this.db.put(store, data).done(key => {
+                    resolve(key);
+                });
+            }
+        });
+    }
+
+    getData(store: string, key: any): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.db.get(store, key).done(key => {
+                resolve(key);
+            });
+        });
     }
 
     getItem(store: string, key: string): Promise<any> {

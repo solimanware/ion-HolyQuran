@@ -5,13 +5,14 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
 
 import { DbService } from './db.service';
+import { VerseService } from '../pages/verse/verse.service';
 
 @Injectable()
 export class QuranService {
     private baseUrl = './assets/data/';
 
     constructor(private http: Http
-    , private dbService: DbService) {
+    , private verseService: VerseService) {
        
     }   
 
@@ -23,18 +24,18 @@ export class QuranService {
         .subscribe(
             res => {
                 let metaData = res[0];
-                this.dbService.setItem('metadata', 'hizbs', metaData.quran.hizbs);
-                this.dbService.setItem('metadata', 'juzs', metaData.quran.juzs);
-                this.dbService.setItem('metadata', 'manzils', metaData.quran.manzils);
-                this.dbService.setItem('metadata', 'pages', metaData.quran.pages);
-                this.dbService.setItem('metadata', 'rukus', metaData.quran.rukus);
-                this.dbService.setItem('metadata', 'sajdas', metaData.quran.sajdas);
+                // this.dbService.setItem('metadata', 'hizbs', metaData.quran.hizbs);
+                // this.dbService.setItem('metadata', 'juzs', metaData.quran.juzs);
+                // this.dbService.setItem('metadata', 'manzils', metaData.quran.manzils);
+                // this.dbService.setItem('metadata', 'pages', metaData.quran.pages);
+                // this.dbService.setItem('metadata', 'rukus', metaData.quran.rukus);
+                // this.dbService.setItem('metadata', 'sajdas', metaData.quran.sajdas);
                 for(let sr = 0; sr < metaData.quran.suras.sura.length; sr++){
                     let sura = metaData.quran.suras.sura[sr];
                     sura.aindex = this.convertNumberalToArabic(sura.index);
                     metaData.quran.suras.sura[sr] = sura;
                 }
-                this.dbService.setItem('metadata', 'suras', metaData.quran.suras);   
+                // this.dbService.setItem('metadata', 'suras', metaData.quran.suras);   
                 let verses = res[1];   
                 for (let i = 0; i < verses.length; i++) {
                     verses[i].aindex = this.convertNumberalToArabic(verses[i].index);
@@ -44,7 +45,8 @@ export class QuranService {
                         ayas[j].aindex = this.convertNumberalToArabic(ayas[j].index);
                     }
                     verses[i].aya = ayas;
-                    this.dbService.setItem('verses', verses[i].index, verses[i]);
+                    // this.dbService.setItem('verses', verses[i].index, verses[i]);
+                    this.verseService.putData(verses[i]);
                 }
             },
             (error) => {

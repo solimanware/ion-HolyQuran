@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { DbService, SchemaService } from '../../shared/shared';
+import { Verse } from './verse';
+import { DbService } from '../../shared/db.service';
+import { SchemaService } from '../../shared/schema.service';
 
 @Injectable()
 export class VerseService {
@@ -17,10 +19,13 @@ export class VerseService {
             });
     }
 
-    put(obj, callback) {
-        this.dbService.put(this.schemaService.tables.verse, {
-            value: obj,
-            callback: callback
+    putData(verse: Verse) {
+        return this.dbService.putData(this.schemaService.tables.verse, {
+            value: verse
         });
+    }
+
+    getData(key: number) {
+        return this.dbService.getData(this.schemaService.tables.verse, key);
     }
 }
