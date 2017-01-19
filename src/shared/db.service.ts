@@ -11,10 +11,11 @@ declare var ydn: any; // Magic
 export class DbService {
     // private dbName: string = 'perfect_quran_v1';
     private dbName: string = 'pq';
+    db: any;
 
     constructor(private schemaService: SchemaService) {
-        var schema = {}; // detail later
-        new ydn.db.Storage('feature-matrix', schemaService.schema);
+        var schema = {};
+        this.db = new ydn.db.Storage('demo', schemaService.schema);
     }
 
     getAllItems(storeName: string) {
@@ -60,6 +61,16 @@ export class DbService {
                 console.log(err);
             });
         return setPromise;
+    }
+
+    put(store: string, opts: any) {
+        let data = opts['value'];
+        if (opts['key']) {
+            this.db.put(store, data, opts['key'])
+                .done(opts['callback']);
+        } else {
+            this.db.put(store, data).done(opts['callback']);
+        }
     }
 
     getItem(store: string, key: string): Promise<any> {
