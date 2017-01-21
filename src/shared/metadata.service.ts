@@ -7,7 +7,6 @@ import { SchemaService } from './schema.service';
 
 @Injectable()
 export class MetaDataService {
-    private storeName: string = 'metadata';
 
     constructor(private dbService: DbService, private schemaService: SchemaService) {
 
@@ -28,13 +27,13 @@ export class MetaDataService {
     //     });
     // }
 
-    get(metadataType: string) {
-        return this.dbService.get(this.storeName, metadataType);
+    get(key: string) {
+        return this.dbService.get(this.schemaService.tables.metadata, key);
     }
 
-    put(metadataType: string, values) {
+    put(key: string, values) {
         return this.dbService.put(this.schemaService.tables.metadata, {
-            key: metadataType,
+            key: key,
             value: values
         });
     }

@@ -25,31 +25,29 @@ export class QuranService {
         .subscribe(
             res => {
                 let metaData = res[0];
-                // this.dbService.setItem('metadata', 'hizbs', metaData.quran.hizbs);
                 this.metadataService.put('hizbs', metaData.quran.hizbs);
-                // this.dbService.setItem('metadata', 'juzs', metaData.quran.juzs);
-                // this.dbService.setItem('metadata', 'manzils', metaData.quran.manzils);
-                // this.dbService.setItem('metadata', 'pages', metaData.quran.pages);
-                // this.dbService.setItem('metadata', 'rukus', metaData.quran.rukus);
-                // this.dbService.setItem('metadata', 'sajdas', metaData.quran.sajdas);
-                // for(let sr = 0; sr < metaData.quran.suras.length; sr++){
-                //     let sura = metaData.quran.suras[sr];
-                //     sura.aindex = this.convertNumberalToArabic(sura.index);
-                //     metaData.quran.suras[sr] = sura;
-                // }
-                // // this.dbService.setItem('metadata', 'suras', metaData.quran.suras);   
-                // let verses = res[1];   
-                // for (let i = 0; i < verses.length; i++) {
-                //     verses[i].aindex = this.convertNumberalToArabic(verses[i].index);
-                //     verses[i].ajuz = this.convertNumberalToArabic(verses[i].juz);
-                //     let ayas = verses[i].aya;
-                //     for (let j = 0; j < ayas.length; j++) {
-                //         ayas[j].aindex = this.convertNumberalToArabic(ayas[j].index);
-                //     }
-                //     verses[i].aya = ayas;
-                //     // this.dbService.setItem('verses', verses[i].index, verses[i]);
-                //     this.verseService.put(verses[i]);
-                // }
+                this.metadataService.put('juzs', metaData.quran.juzs);
+                this.metadataService.put('manzils', metaData.quran.manzils);
+                this.metadataService.put('pages', metaData.quran.pages);
+                this.metadataService.put('rukus', metaData.quran.rukus);
+                this.metadataService.put('sajdas', metaData.quran.sajdas);
+                for(let sr = 0; sr < metaData.quran.suras.length; sr++){
+                    let sura = metaData.quran.suras[sr];
+                    sura.aindex = this.convertNumberalToArabic(sura.index);
+                    metaData.quran.suras[sr] = sura;
+                }
+                this.metadataService.put('suras', metaData.quran.suras);   
+                let verses = res[1];   
+                for (let i = 0; i < verses.length; i++) {
+                    verses[i].aindex = this.convertNumberalToArabic(verses[i].index);
+                    verses[i].ajuz = this.convertNumberalToArabic(verses[i].juz);
+                    let ayas = verses[i].aya;
+                    for (let j = 0; j < ayas.length; j++) {
+                        ayas[j].aindex = this.convertNumberalToArabic(ayas[j].index);
+                    }
+                    verses[i].aya = ayas;
+                    this.verseService.put(verses[i]);
+                }
             },
             (error) => {
                 console.log('error');

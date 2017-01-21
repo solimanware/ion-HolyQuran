@@ -91,14 +91,14 @@ export class DbService {
         });
     }
 
-    getItem(store: string, key: string): Promise<any> {
-        let storeInstance = localforage.createInstance({
-            storeName: store,
-            name: this.dbName
-        });
-        storeInstance.setDriver([localforage.INDEXEDDB, localforage.WEBSQL]);
-        return storeInstance.getItem(key);
-    }
+    // getItem(store: string, key: string): Promise<any> {
+    //     let storeInstance = localforage.createInstance({
+    //         storeName: store,
+    //         name: this.dbName
+    //     });
+    //     storeInstance.setDriver([localforage.INDEXEDDB, localforage.WEBSQL]);
+    //     return storeInstance.getItem(key);
+    // }
 
     removeItem(store: string, key: string): Promise<any> {
         let storeInstance = localforage.createInstance({
