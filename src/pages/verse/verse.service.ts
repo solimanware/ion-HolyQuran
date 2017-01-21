@@ -27,6 +27,6 @@ export class VerseService {
     }
 
     getVerse(key: number) {
-        return this.dbService.get(this.schemaService.tables.verse, key);
+        return this.dbService.get(this.schemaService.tables.verse, key.toString());
     }
 }

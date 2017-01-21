@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 
 import { DbService } from '../../shared/db.service';
 import { SchemaService } from '../../shared/schema.service';
+import { MetaDataService } from '../../shared/metadata.service';
 
 @Injectable()
 export class SurahService {
     private key: string = 'suras';
 
-    constructor(private dbService: DbService, private schemaService: SchemaService) {
+    constructor(private dbService: DbService, private schemaService: SchemaService,
+        private metaDataService: MetaDataService) {
 
     }
 
@@ -23,5 +25,5 @@ export class SurahService {
             let sura = suras.find(sura => sura.index == index);
             return sura;
         });
-    }
+    }   
 }

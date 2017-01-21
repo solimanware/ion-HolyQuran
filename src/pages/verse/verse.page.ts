@@ -61,6 +61,8 @@ export class VersePage {
                 //no bookmark ? create current sura and first verse as bookmark
                 this.bookMarkApplicationVerse(this.ayas[0], this.verseDetail);
             }
+        }).catch(() => {
+            this.loader.dismiss();
         });
     }
 

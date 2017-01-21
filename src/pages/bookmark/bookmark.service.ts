@@ -5,19 +5,25 @@ import { Injectable } from '@angular/core';
 
 import { Bookmark, BookmarkType } from './bookmark';
 import { DbService } from '../../shared/db.service';
+import { SchemaService } from '../../shared/schema.service';
 import { Verse } from '../verse/verse';
 import { SurahService } from '../surah/surah.service';
 import _ from 'lodash';
 
 @Injectable()
 export class BookmarkService {
-    private storeName: string = 'bookmarks';
 
-    constructor(private dbService: DbService, private suraService: SurahService) {
+    constructor(private dbService: DbService, private suraService: SurahService, private schemaService: SchemaService) {
     }
 
     getAll() {
-        return this.dbService.getAllItems(this.storeName);
+        return this.dbService.getAll(this.schemaService.tables.bookmark)
+            .then(bookmarks => {
+                bookmarks = bookmarks.map(function (product) {
+                    return product.value
+                });
+                return bookmarks;
+            })
     }
 
     getAllUserBookmarks() {
@@ -71,7 +77,10 @@ export class BookmarkService {
                 type: type != null ? type : BookmarkType.User,
                 sura: sura
             };
-            return this.dbService.setItem(this.storeName, surahVerseKey, bookmark);
+            return this.dbService.put(this.schemaService.tables.bookmark, {
+                key: surahVerseKey,
+                value: bookmark
+            });
         });
         return bookmarkPromise;
     }
@@ -79,6 +88,6 @@ export class BookmarkService {
     removeBookmark(bookmark: Bookmark) {
         let surahVerseKey = `${bookmark.sura.index}_${bookmark.index}`;
         console.log('remove key: ' + surahVerseKey);
-        return this.dbService.removeItem(this.storeName, surahVerseKey);
+        return this.dbService.remove(this.schemaService.tables.bookmark, surahVerseKey);
     }
 }

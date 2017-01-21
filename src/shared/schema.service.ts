@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class SchemaService {
     private _verse = "verse";
+    private _bookmark = "bookmark";
     private _metadata = "metadata";
 
     schema = {
@@ -12,6 +13,10 @@ export class SchemaService {
                 keyPath: 'index'
             },
             {
+                name: this._bookmark,
+                keyPath: 'key'
+            },
+            {
                 name: this._metadata,
                 keyPath: 'key'
             }
@@ -19,7 +24,8 @@ export class SchemaService {
     };
     tables = {
         verse: this._verse,
-        metadata: this._metadata
+        metadata: this._metadata,
+        bookmark: this._bookmark
     };
 
     constructor() {
