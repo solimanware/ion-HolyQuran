@@ -12,20 +12,21 @@ export class VerseService {
 
     }
 
-    getBySurahId(index) {
-        return this.dbService.getItem(this.storeName, index)
-            .then((result: any) => {
-                return result;
-            });
+    getBySurahId(index: number) {
+        return this.getVerse(index);
+        // return this.dbService.getItem(this.storeName, index)
+        //     .then((result: any) => {
+        //         return result;
+        //     });
     }
 
-    putData(verse: Verse) {
-        return this.dbService.putData(this.schemaService.tables.verse, {
+    put(verse: Verse) {
+        return this.dbService.put(this.schemaService.tables.verse, {
             value: verse
         });
     }
 
-    getData(key: number) {
-        return this.dbService.getData(this.schemaService.tables.verse, key);
+    getVerse(key: number) {
+        return this.dbService.get(this.schemaService.tables.verse, key);
     }
 }
