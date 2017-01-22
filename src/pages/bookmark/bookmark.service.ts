@@ -7,13 +7,13 @@ import { Bookmark, BookmarkType } from './bookmark';
 import { DbService } from '../../shared/db.service';
 import { SchemaService } from '../../shared/schema.service';
 import { Verse } from '../verse/verse';
-import { SurahService } from '../surah/surah.service';
+import { SuraService } from '../sura/sura.service';
 import _ from 'lodash';
 
 @Injectable()
 export class BookmarkService {
 
-    constructor(private dbService: DbService, private suraService: SurahService, private schemaService: SchemaService) {
+    constructor(private dbService: DbService, private suraService: SuraService, private schemaService: SchemaService) {
     }
 
     getAll() {

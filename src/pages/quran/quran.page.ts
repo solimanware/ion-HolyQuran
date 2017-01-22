@@ -6,7 +6,7 @@ import { BookmarkService } from '../bookmark/bookmark.service';
 import { Verse, VerseParams } from './verse';
 import { MoreOptionsPopoverPage } from './more-options-popover.page';
 import { BookmarkPage } from '../bookmark/bookmark.page';
-import { SurahPage } from '../surah/surah.page';
+import { SuraPage } from '../sura/sura.page';
 import { JuzPage } from '../juz/juz.page';
 
 
@@ -20,7 +20,7 @@ export class QuranPage {
     tabBookmark: any;
 
     constructor() {
-        this.tabSura = SurahPage;
+        this.tabSura = SuraPage;
         this.tabJuz = JuzPage;
         this.tabBookmark = BookmarkPage;
     }

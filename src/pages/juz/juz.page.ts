@@ -4,10 +4,10 @@ import { NavController } from 'ionic-angular';
 import { VersePage } from '../verse/verse.page';
 import { VerseParams } from '../verse/verse';
 import { Juz } from './juz';
-import { Sura } from '../surah/sura';
+import { Sura } from '../sura/sura';
 
 import { HelperService } from '../../shared/shared';
-import { SurahService } from '../surah/surah.service';
+import { SuraService } from '../sura/sura.service';
 import { JuzService } from './juz.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class JuzPage implements OnInit {
     public juzs: Array<Juz> = [];
 
     constructor(private navCtrl: NavController, private renderer: Renderer
-        , private juzService: JuzService, private suraService: SurahService, private helperService: HelperService) {
+        , private juzService: JuzService, private suraService: SuraService, private helperService: HelperService) {
 
     }
 

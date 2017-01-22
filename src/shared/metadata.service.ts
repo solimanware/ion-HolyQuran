@@ -40,4 +40,9 @@ export class MetaDataService {
             value: values
         });
     }
+
+    
+    count() {
+        return this.dbService.count(this.schemaService.tables.metadata);
+    }
 }

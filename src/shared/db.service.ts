@@ -70,9 +70,9 @@ export class DbService {
         });
     }
 
-    count(store, opts) {
+    count(store, opts?) {
         return new Promise((resolve, reject) => {
-            if (opts['key']) {
+            if (opts && opts['key']) {
                 this.db.count(store, ydn.db.KeyRange.only(opts['key'])).done(key => {
                     resolve(key);
                 });

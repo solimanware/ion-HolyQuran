@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
-import { SurahService } from './surah.service';
+import { SuraService } from './sura.service';
 import { BookmarkService } from '../bookmark/bookmark.service';
 import { Bookmark } from '../bookmark/bookmark';
 import { Sura } from './sura';
@@ -11,14 +11,14 @@ import { VerseParams } from '../verse/verse';
 import { HelperService } from '../../shared/shared';
 
 @Component({
-    selector: 'page-surah',
-    templateUrl: 'surah.html'
+    selector: 'page-sura',
+    templateUrl: 'sura.html'
 })
-export class SurahPage implements OnInit {
+export class SuraPage implements OnInit {
     public surahs: Array<Sura> = [];
 
     constructor(private navCtrl: NavController, private renderer: Renderer
-        , private surahService: SurahService, private bookmarkService: BookmarkService
+        , private surahService: SuraService, private bookmarkService: BookmarkService
         , private helperService: HelperService) {
     }
 

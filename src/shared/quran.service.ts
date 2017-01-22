@@ -7,71 +7,78 @@ import 'rxjs/add/observable/forkJoin';
 import { DbService } from './db.service';
 import { MetaDataService } from './metadata.service';
 import { VerseService } from '../pages/verse/verse.service';
+import { SuraService } from '../pages/sura/sura.service';
 
 @Injectable()
 export class QuranService {
     private baseUrl = './assets/data/';
 
     constructor(private http: Http
-    , private verseService: VerseService, private metadataService: MetaDataService) {
-       
-    }   
+        , private verseService: VerseService, private suraService: SuraService
+        , private metadataService: MetaDataService) {
 
-    syncData (successCallback?, errorCallback?) {
+    }
+
+    syncData(successCallback?, errorCallback?) {
         Observable.forkJoin(
             this.getMetaData(),
             this.getVerses()
         )
-        .subscribe(
+            .subscribe(
             res => {
-                let metaData = res[0];
-                this.metadataService.put('hizbs', metaData.quran.hizbs);
-                this.metadataService.put('juzs', metaData.quran.juzs);
-                this.metadataService.put('manzils', metaData.quran.manzils);
-                this.metadataService.put('pages', metaData.quran.pages);
-                this.metadataService.put('rukus', metaData.quran.rukus);
-                this.metadataService.put('sajdas', metaData.quran.sajdas);
-                for(let sr = 0; sr < metaData.quran.suras.length; sr++){
-                    let sura = metaData.quran.suras[sr];
-                    sura.aindex = this.convertNumberalToArabic(sura.index);
-                    metaData.quran.suras[sr] = sura;
-                }
-                this.metadataService.put('suras', metaData.quran.suras);   
-                let verses = res[1];   
-                for (let i = 0; i < verses.length; i++) {
-                    verses[i].aindex = this.convertNumberalToArabic(verses[i].index);
-                    verses[i].ajuz = this.convertNumberalToArabic(verses[i].juz);
-                    let ayas = verses[i].aya;
-                    for (let j = 0; j < ayas.length; j++) {
-                        ayas[j].aindex = this.convertNumberalToArabic(ayas[j].index);
+                this.metadataService.count().then((data: number) => {
+                    if (data == 0) {
+                        let metaData = res[0];
+                        this.metadataService.put('hizbs', metaData.quran.hizbs);
+                        this.metadataService.put('juzs', metaData.quran.juzs);
+                        this.metadataService.put('manzils', metaData.quran.manzils);
+                        this.metadataService.put('pages', metaData.quran.pages);
+                        this.metadataService.put('rukus', metaData.quran.rukus);
+                        this.metadataService.put('sajdas', metaData.quran.sajdas);
+
+                        for (let sr = 0; sr < metaData.quran.suras.length; sr++) {
+                            let sura = metaData.quran.suras[sr];
+                            sura.aindex = this.convertNumberalToArabic(sura.index);
+                            metaData.quran.suras[sr] = sura;
+                        }
+                        this.metadataService.put('suras', metaData.quran.suras);
+                        let verses = res[1];
+                        for (let i = 0; i < verses.length; i++) {
+                            verses[i].aindex = this.convertNumberalToArabic(verses[i].index);
+                            verses[i].ajuz = this.convertNumberalToArabic(verses[i].juz);
+                            let ayas = verses[i].aya;
+                            for (let j = 0; j < ayas.length; j++) {
+                                ayas[j].aindex = this.convertNumberalToArabic(ayas[j].index);
+                            }
+                            verses[i].aya = ayas;
+                            this.verseService.put(verses[i]);
+                        }
                     }
-                    verses[i].aya = ayas;
-                    this.verseService.put(verses[i]);
-                }
+                });
             },
             (error) => {
                 console.log('error');
-                if(errorCallback)
+                if (errorCallback)
                     errorCallback(error);
-            }, 
-            () => { 
+            },
+            () => {
                 console.log('successCallback');
-                if(successCallback)
+                if (successCallback)
                     successCallback();
             })
     }
 
-    getMetaData () { 
+    getMetaData() {
         return this.http.get(`${this.baseUrl}quran-metadata.json`)
             .map((res: Response) => res.json());
     }
 
-    getVerses () {
+    getVerses() {
         return this.http.get(`${this.baseUrl}quran.json`)
             .map((res: Response) => res.json());
     }
 
-    convertNumberalToArabic (text) {
+    convertNumberalToArabic(text) {
         let arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
         let chars = text.split('');
         for (let i = 0; i < chars.length; i++) {

@@ -5,7 +5,7 @@ import { SchemaService } from '../../shared/schema.service';
 import { MetaDataService } from '../../shared/metadata.service';
 
 @Injectable()
-export class SurahService {
+export class SuraService {
     private key: string = 'suras';
 
     constructor(private dbService: DbService, private schemaService: SchemaService,
@@ -25,5 +25,11 @@ export class SurahService {
             let sura = suras.find(sura => sura.index == index);
             return sura;
         });
-    }   
+    }  
+
+    count() {
+        return this.dbService.count(this.schemaService.tables.metadata, {
+            key: this.key
+        });
+    } 
 }
