@@ -1,6 +1,4 @@
 // http://ionicframework.com/docs/v2/theming/
-
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -16,21 +14,50 @@
 // automatically applied to the <body> element in the app.
 @font-face {
   font-family: 'KFGQPC Uthmanic Script HAFS';
-    src: url("../assets/fonts/UthmanicHafs1 Ver09.otf") format("opentype");
+  src: url("../assets/fonts/UthmanicHafs1 Ver09.otf") format("opentype");
 }
+
 @font-face {
-    font-family: 'me_quran';
-    src: url("../assets/fonts/me_quran.ttf");
+  font-family: 'me_quran';
+  src: url("../assets/fonts/me_quran.ttf");
 }
+
 @font-face {
-    font-family: 'Open Sans';
-    src: url("../assets/fonts/OpenSans-Regular.ttf");
+  font-family: 'Open Sans';
+  src: url("../assets/fonts/OpenSans-Regular.ttf");
 }
+
 @font-face {
-    font-family: 'Open Sans';
-    font-weight: bold;
-    src: url("../assets/fonts/OpenSans-Bold.ttf");
+  font-family: 'Open Sans';
+  font-weight: bold;
+  src: url("../assets/fonts/OpenSans-Bold.ttf");
 }
+
 ion-title {
-    text-align: center; 
+  text-align: center;
+}
+
+.pq-listview {
+  direction: rtl;
+  .pq-listview-item {
+    overflow: visible;
+    font-size: inherit;
+    .pq-listview-name {
+      font-size: 1.9em;
+      font-family: 'KFGQPC Uthmanic Script HAFS';
+      font-weight: bold;
+    }
+    .pq-listview-detail {
+      font-family: 'Open Sans';
+      direction: ltr;
+      text-align: right;
+      font-size: 1.5em;
+      word-wrap: break-word;
+      white-space: normal;
+    }
+    .pq-listview-sub-detail {
+      font-family: 'Open Sans';
+      font-size: 1em;
+    }
+  }
 }
