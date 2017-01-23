@@ -1,11 +1,11 @@
 import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { Content, NavController, NavParams, ActionSheetController, PopoverController, LoadingController, ModalController } from 'ionic-angular';
 
-import { VerseService } from './verse.service';
-import { BookmarkService } from '../bookmark/bookmark.service';
-import { Bookmark, BookmarkType } from '../bookmark/bookmark';
-import { Verse, VerseParams } from './verse';
-import { MoreOptionsPopoverPage } from './more-options-popover.page';
+import { VerseService } from '../verse.service';
+import { BookmarkService } from '../../bookmark/bookmark.service';
+import { Bookmark, BookmarkType } from '../../bookmark/bookmark';
+import { Verse, VerseParams } from '../verse';
+import { MoreOptionsPopoverPage } from '../more-options-popover.page';
 
 @Component({
     selector: 'page-verse',
@@ -33,7 +33,6 @@ export class VersePage {
     }
 
     ionViewWillEnter() {
-        // document.getElementById("ion-header")[0].style.display = "none";
 
         console.log(this.navParams.data);
         this.loader.present();
