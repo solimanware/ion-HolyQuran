@@ -4,7 +4,8 @@ import { Content, NavController, NavParams, ActionSheetController, PopoverContro
 import { VerseService } from './verse.service';
 import { BookmarkService } from '../bookmark/bookmark.service';
 import { Bookmark, BookmarkType } from '../bookmark/bookmark';
-import { Verse, VerseParams } from './verse';
+import { Verse, VerseParams, VerseDetail } from './verse';
+import { VersePreviewModal } from './modal/verse-preview.page';
 import { MoreOptionsPopoverPage } from './more-options-popover.page';
 
 @Component({
@@ -66,14 +67,14 @@ export class VersePage {
         });
     }
 
-    bookMarkVerse(verse: Verse, verseDetail, bookmarkType: BookmarkType = BookmarkType.User) {
+    bookMarkVerse(verse: Verse, verseDetail: VerseDetail, bookmarkType: BookmarkType = BookmarkType.User) {
         console.log(verseDetail);
         this.bookmarkService.addVerseToBookmarks(verse, verseDetail, bookmarkType)
             .then((result: Verse) => {
             });
     }
 
-    bookMarkApplicationVerse(verse: Verse, verseDetail) {
+    bookMarkApplicationVerse(verse: Verse, verseDetail: VerseDetail) {
         //make current verse selected
         this.selectCurrentVerse(verse.index);
         this.bookmarkService.addOrUpdateApplicationBookmark(verse, verseDetail)
@@ -81,7 +82,7 @@ export class VersePage {
             });
     }
 
-    displayVerseActionSheet(verse: Verse, verseDetail) {
+    displayVerseActionSheet(verse: Verse, verseDetail: VerseDetail) {
         //make current verse selected
         this.selectCurrentVerse(verse.index);
         this.presentVerseActionSheet(verse, verseDetail);
@@ -92,6 +93,12 @@ export class VersePage {
         popover.present({
             ev: event
         });
+    }
+
+    presentPreviewModal(verse: Verse, verseDetail: VerseDetail) {
+        console.log(verseDetail);
+        let previewModal = this.modalCtrl.create(VersePreviewModal, { verse: verse });
+        previewModal.present();
     }
 
     private scrollTo(verseIndex: number) {
@@ -124,7 +131,7 @@ export class VersePage {
         return { top: top, left: left };
     }
 
-    private presentVerseActionSheet(verse: Verse, verseDetail) {
+    private presentVerseActionSheet(verse: Verse, verseDetail: VerseDetail) {
         let actionSheet = this.actionSheetCtrl.create({
             title: 'Choose',
             buttons: [
@@ -136,6 +143,13 @@ export class VersePage {
                     }
                 },
                 {
+                    text: 'Preview',
+                    handler: () => {
+                        console.log('preview clicked');
+                        this.presentPreviewModal(verse, verseDetail);
+                    }
+                },
+                {
                     text: 'Cancel',
                     role: 'cancel'
                 }
@@ -144,8 +158,4 @@ export class VersePage {
         actionSheet.present();
     }
 
-    private presentPreviewModal(verse: Verse) {
-        // let contactModal = this.modalCtrl.create(ContactUs, { verse: verse });
-        // contactModal.present();
-    }
 }
