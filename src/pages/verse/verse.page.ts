@@ -14,13 +14,14 @@ import { MoreOptionsPopoverPage } from './more-options-popover.page';
 })
 export class VersePage {
     @ViewChild(Content) content: Content;
-
-    public verseDetail: any;
-    public ayas: Array<Verse> = [];
-    public pageTitle = '';
-    public bufferRatio = 3;
     private verseParams: VerseParams;
     private loader;
+
+    verseDetail: any;
+    ayas: Array<Verse> = [];
+    pageTitle = '';
+    bufferRatio = 3;
+    displayToolbarOptions = false;
 
     constructor(private elRef: ElementRef, private renderer: Renderer, private navCtrl: NavController,
         private navParams: NavParams, private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
@@ -40,7 +41,7 @@ export class VersePage {
         this.loader.present();
         this.verseService.getBySurahId(this.verseParams.suraIndex).then((verse) => {
             this.verseDetail = verse;
-            // this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
+            this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
             this.ayas = verse.aya;
             console.log('firing');
         }).then(() => {
@@ -76,16 +77,16 @@ export class VersePage {
 
     bookMarkApplicationVerse(verse: Verse, verseDetail: VerseDetail) {
         //make current verse selected
-        this.selectCurrentVerse(verse.index);
+        this.selectCurrentVerse(verse);
         this.bookmarkService.addOrUpdateApplicationBookmark(verse, verseDetail)
             .then((result: Verse) => {
             });
     }
 
     displayVerseActionSheet(verse: Verse, verseDetail: VerseDetail) {
-        //make current verse selected
-        this.selectCurrentVerse(verse.index);
-        this.presentVerseActionSheet(verse, verseDetail);
+        this.selectCurrentVerse(verse);
+        // this.presentVerseActionSheet(verse, verseDetail);
+        this.displayToolbarOptions = true;
     }
 
     presentMoreOptionsPopover(event) {
@@ -97,30 +98,39 @@ export class VersePage {
 
     presentPreviewModal(verse: Verse, verseDetail: VerseDetail) {
         console.log(verseDetail);
-        let previewModal = this.modalCtrl.create(VersePreviewModal, { verse: verse });
+        let previewModal = this.modalCtrl.create(VersePreviewModal, { verse: verse, verseDetail: verseDetail });
         previewModal.present();
     }
 
     private scrollTo(verseIndex: number) {
-        //make current verse selected
-        let element = this.selectCurrentVerse(verseIndex);
+        let verseKey = '#verse_' + verseIndex;
+        console.log(verseKey);
+        let hElement: HTMLElement = this.content._elementRef.nativeElement;
+        let element = hElement.querySelector(verseKey);
         let offset = this.getElementOffset(element);
         console.log(offset);
         this.content.scrollTo(0, offset.top)
+        //make current verse selected
+        let verseToFind = this.ayas.find((x: Verse) => x.index == this.verseParams.verseIndex);
+        this.selectCurrentVerse(verseToFind);
         //change back buffer ratio to gain performance back
         setTimeout(() => {
             this.bufferRatio = 3;
         });
     }
 
-    private selectCurrentVerse(verseIndex: number): Element {
-        let verseKey = '#verse_' + verseIndex;
-        console.log(verseKey);
-        let hElement: HTMLElement = this.content._elementRef.nativeElement;
-        let element = hElement.querySelector(verseKey);
-        let oldClasses = element.getAttribute('class');
-        this.renderer.setElementAttribute(element, "class", oldClasses + ' verse-selected');
-        return element;
+    private selectCurrentVerse(verse: Verse) {
+        //make current verse selected
+        verse.isSelected = true;
+        //remove prev selected verse
+        let prevSelectedVerses = this.ayas.filter((verse) => verse.isSelected);
+        for (let prevVerse of prevSelectedVerses) {
+            prevVerse.isSelected = false;
+        }
+
+        // let hElement: HTMLElement = this.content._elementRef.nativeElement;
+        // let element = hElement.querySelector(verseKey);
+        // let oldClasses = element.getAttribute('class');
     }
 
     private getElementOffset(element) {

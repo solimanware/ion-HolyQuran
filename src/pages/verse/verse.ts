@@ -2,7 +2,8 @@ export interface Verse {
     aindex: string,
     index: number,
     text: string,
-    bismillah?: string
+    bismillah?: string,
+    isSelected?: boolean
 }
 
 export interface VerseParams {
