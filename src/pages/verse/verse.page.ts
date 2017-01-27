@@ -1,10 +1,11 @@
 import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
-import { Content, NavController, NavParams, ActionSheetController, PopoverController, LoadingController } from 'ionic-angular';
+import { Content, NavController, NavParams, ActionSheetController, PopoverController, LoadingController, ModalController } from 'ionic-angular';
 
 import { VerseService } from './verse.service';
 import { BookmarkService } from '../bookmark/bookmark.service';
 import { Bookmark, BookmarkType } from '../bookmark/bookmark';
-import { Verse, VerseParams } from './verse';
+import { Verse, VerseParams, VerseDetail } from './verse';
+import { VersePreviewModal } from './modal/verse-preview.page';
 import { MoreOptionsPopoverPage } from './more-options-popover.page';
 
 @Component({
@@ -13,18 +14,19 @@ import { MoreOptionsPopoverPage } from './more-options-popover.page';
 })
 export class VersePage {
     @ViewChild(Content) content: Content;
-
-    public verseDetail: any;
-    public ayas: Array<Verse> = [];
-    public pageTitle = '';
-    public bufferRatio = 3;
     private verseParams: VerseParams;
     private loader;
 
+    verseDetail: any;
+    ayas: Array<Verse> = [];
+    pageTitle = '';
+    bufferRatio = 3;
+    displayToolbarOptions = false;
+
     constructor(private elRef: ElementRef, private renderer: Renderer, private navCtrl: NavController,
         private navParams: NavParams, private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
-        private loadingCtrl: LoadingController,
-        private verseService: VerseService, private bookmarkService: BookmarkService) {
+        private loadingCtrl: LoadingController, public modalCtrl: ModalController
+        , private verseService: VerseService, private bookmarkService: BookmarkService) {
         this.verseParams = this.navParams.data;
         //cache loader
         this.loader = this.loadingCtrl.create({
@@ -39,7 +41,7 @@ export class VersePage {
         this.loader.present();
         this.verseService.getBySurahId(this.verseParams.suraIndex).then((verse) => {
             this.verseDetail = verse;
-            // this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
+            this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
             this.ayas = verse.aya;
             console.log('firing');
         }).then(() => {
@@ -61,24 +63,30 @@ export class VersePage {
                 //no bookmark ? create current sura and first verse as bookmark
                 this.bookMarkApplicationVerse(this.ayas[0], this.verseDetail);
             }
+        }).catch(() => {
+            this.loader.dismiss();
         });
     }
 
-    bookMarkVerse(verse: Verse, verseDetail, bookmarkType: BookmarkType = BookmarkType.User) {
+    bookMarkVerse(verse: Verse, verseDetail: VerseDetail, bookmarkType: BookmarkType = BookmarkType.User) {
         console.log(verseDetail);
         this.bookmarkService.addVerseToBookmarks(verse, verseDetail, bookmarkType)
             .then((result: Verse) => {
             });
     }
 
-    bookMarkApplicationVerse(verse: Verse, verseDetail) {
+    bookMarkApplicationVerse(verse: Verse, verseDetail: VerseDetail) {
+        //make current verse selected
+        this.selectCurrentVerse(verse);
         this.bookmarkService.addOrUpdateApplicationBookmark(verse, verseDetail)
             .then((result: Verse) => {
             });
     }
 
-    displayVerseActionSheet(verse: Verse, verseDetail) {
-        this.presentVerseActionSheet(verse, verseDetail);
+    displayVerseActionSheet(verse: Verse, verseDetail: VerseDetail) {
+        this.selectCurrentVerse(verse);
+        // this.presentVerseActionSheet(verse, verseDetail);
+        this.displayToolbarOptions = true;
     }
 
     presentMoreOptionsPopover(event) {
@@ -88,21 +96,41 @@ export class VersePage {
         });
     }
 
-    private scrollTo(verseIndex) {
+    presentPreviewModal(verse: Verse, verseDetail: VerseDetail) {
+        console.log(verseDetail);
+        let previewModal = this.modalCtrl.create(VersePreviewModal, { verse: verse, verseDetail: verseDetail });
+        previewModal.present();
+    }
+
+    private scrollTo(verseIndex: number) {
         let verseKey = '#verse_' + verseIndex;
         console.log(verseKey);
-        // let hElement: HTMLElement = this.elRef.nativeElement;
         let hElement: HTMLElement = this.content._elementRef.nativeElement;
         let element = hElement.querySelector(verseKey);
         let offset = this.getElementOffset(element);
-        let oldClasses = element.getAttribute('class');
-        this.renderer.setElementAttribute(element, "class", oldClasses + ' verse-selected');
         console.log(offset);
         this.content.scrollTo(0, offset.top)
+        //make current verse selected
+        let verseToFind = this.ayas.find((x: Verse) => x.index == this.verseParams.verseIndex);
+        this.selectCurrentVerse(verseToFind);
         //change back buffer ratio to gain performance back
         setTimeout(() => {
             this.bufferRatio = 3;
         });
+    }
+
+    private selectCurrentVerse(verse: Verse) {
+        //make current verse selected
+        verse.isSelected = true;
+        //remove prev selected verse
+        let prevSelectedVerses = this.ayas.filter((verse) => verse.isSelected);
+        for (let prevVerse of prevSelectedVerses) {
+            prevVerse.isSelected = false;
+        }
+
+        // let hElement: HTMLElement = this.content._elementRef.nativeElement;
+        // let element = hElement.querySelector(verseKey);
+        // let oldClasses = element.getAttribute('class');
     }
 
     private getElementOffset(element) {
@@ -113,7 +141,7 @@ export class VersePage {
         return { top: top, left: left };
     }
 
-    private presentVerseActionSheet(verse: Verse, verseDetail) {
+    private presentVerseActionSheet(verse: Verse, verseDetail: VerseDetail) {
         let actionSheet = this.actionSheetCtrl.create({
             title: 'Choose',
             buttons: [
@@ -125,6 +153,13 @@ export class VersePage {
                     }
                 },
                 {
+                    text: 'Preview',
+                    handler: () => {
+                        console.log('preview clicked');
+                        this.presentPreviewModal(verse, verseDetail);
+                    }
+                },
+                {
                     text: 'Cancel',
                     role: 'cancel'
                 }
@@ -132,4 +167,5 @@ export class VersePage {
         });
         actionSheet.present();
     }
+
 }

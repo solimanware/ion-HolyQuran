@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="dismissModal()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <!--<ion-title>{{pageTitle}}</ion-title>-->
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <div class="verses-listview-item">
+    <div class="verses-listview-bismillah" *ngIf="verse.bismillah">
+      <!--{{ verse.bismillah }}-->
+    </div>
+    <div class="verses-listview-text">
+      <!--{{ verse.text }}<span>{{verse.aindex}}</span>-->My Text
+    </div>
+  </div>
+</ion-content>

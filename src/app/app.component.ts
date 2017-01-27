@@ -4,15 +4,18 @@ import { Subscription } from 'rxjs/Subscription';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
-import { SurahPage, BookmarkPage, QuranPage, SettingPage } from '../pages/shared';
+import { SuraPage, BookmarkPage, QuranPage, SettingPage } from '../pages/shared';
 import { QuranService, EventPublisher } from '../shared/shared';
+import { SettingService } from '../pages/setting/setting.service';
 
 @Component({
   selector: 'body',
   templateUrl: 'app.html'
 })
 export class MyApp implements OnDestroy {
-  @HostBinding('style.fontSize') fontSize = '14px';
+  private baseFontSize = 14;
+
+  @HostBinding('style.fontSize') applicationFontSize = this.baseFontSize + 'px';
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any;
@@ -20,21 +23,18 @@ export class MyApp implements OnDestroy {
   subscription: Subscription;
 
   constructor(public platform: Platform
-    , private quranService: QuranService, private eventPublisher: EventPublisher) {
+    , private quranService: QuranService, private eventPublisher: EventPublisher
+    , private settingService: SettingService) {
+
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Bookmark', component: BookmarkPage },
-      { title: 'Surah', component: SurahPage },
+      { title: 'Surah', component: SuraPage },
       { title: 'Settings', component: SettingPage }
     ];
 
-    this.subscription = eventPublisher.fontSizeChanged$.subscribe(
-      fontSize => {
-        console.log(fontSize);
-        this.fontSize = fontSize + 'px';
-      });
   }
 
   initializeApp() {
@@ -45,9 +45,36 @@ export class MyApp implements OnDestroy {
 
       this.quranService.syncData(() => {
         this.rootPage = QuranPage;
+
+        //set font
+        this.settingService.get('fontSize').then(fontSize => {
+          if (fontSize) {
+            this.applicationFontSize = fontSize + 'px';
+          }
+        });
+        //hide splash screen
         Splashscreen.hide();
       });
     });
+
+
+    //font size changed 
+    this.subscription = this.eventPublisher.fontSizeChanged$.subscribe(
+      fontSize => {
+        switch (fontSize) {
+          case 1:
+            fontSize = this.baseFontSize;
+            break;
+          case 2:
+            fontSize = this.baseFontSize + 2;
+            break;
+          case 3:
+            fontSize = this.baseFontSize + 4;
+            break;
+        }
+        this.applicationFontSize = fontSize + 'px';
+        this.settingService.put('fontSize', fontSize);
+      });
   }
 
   openPage(page) {
