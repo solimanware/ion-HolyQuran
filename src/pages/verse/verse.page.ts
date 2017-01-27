@@ -1,12 +1,11 @@
 import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
-import { Content, NavController, NavParams, ActionSheetController, PopoverController, LoadingController, ModalController } from 'ionic-angular';
+import { Content, NavController, NavParams, ActionSheetController, PopoverController, LoadingController, AlertController } from 'ionic-angular';
 
 import { VerseService } from './verse.service';
 import { BookmarkService } from '../bookmark/bookmark.service';
 import { Bookmark, BookmarkType } from '../bookmark/bookmark';
 import { Verse, VerseParams, VerseDetail } from './verse';
-import { VersePreviewModal } from './modal/verse-preview.page';
-import { MoreOptionsPopoverPage } from './more-options-popover.page';
+import { MoreOptionsPopoverPage } from './more-options-popover.page'; 
 
 @Component({
     selector: 'page-verse',
@@ -24,7 +23,7 @@ export class VersePage {
 
     constructor(private elRef: ElementRef, private renderer: Renderer, private navCtrl: NavController,
         private navParams: NavParams, private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
-        private loadingCtrl: LoadingController, public modalCtrl: ModalController
+        private loadingCtrl: LoadingController, private alertCtrl: AlertController
         , private verseService: VerseService, private bookmarkService: BookmarkService) {
         this.verseParams = this.navParams.data;
         //cache loader
@@ -67,11 +66,15 @@ export class VersePage {
         });
     }
 
-    bookMarkVerse(verse: Verse, verseDetail: VerseDetail, bookmarkType: BookmarkType = BookmarkType.User) {
-        console.log(verseDetail);
-        //make current verse selected
-        this.selectCurrentVerse(verse);
-        this.bookmarkService.addVerseToBookmarks(verse, verseDetail, bookmarkType);
+    bookMarkVerse() {
+        //find selected verse
+        let verseToFind = this.ayas.filter((v: Verse) => v.isSelected);
+        if (verseToFind.length) {
+            let verse = verseToFind[0];
+            //make current verse selected
+            this.selectCurrentVerse(verse);
+            this.bookmarkService.addVerseToBookmarks(verse, this.verseDetail, BookmarkType.User);
+        }
     }
 
     bookMarkApplicationVerse(verse: Verse, verseDetail: VerseDetail) {
@@ -97,8 +100,13 @@ export class VersePage {
         let verseToFind = this.ayas.filter((v: Verse) => v.isSelected);
         if (verseToFind.length) {
             let verse = verseToFind[0];
-            let previewModal = this.modalCtrl.create(VersePreviewModal, { verse: verse, verseDetail: this.verseDetail });
-            previewModal.present();
+            let previewDialog = this.alertCtrl.create({
+                title: this.pageTitle,
+                // subTitle: `${verse.text } < span > ${verse.aindex } < /span>`,
+                subTitle: '<h1>Preview dialog</h1>',
+                buttons: ['Close']
+            });
+            previewDialog.present();
         }
     }
 
@@ -141,13 +149,13 @@ export class VersePage {
         let actionSheet = this.actionSheetCtrl.create({
             title: 'Choose',
             buttons: [
-                {
-                    text: 'Bookmark this',
-                    handler: () => {
-                        console.log('bookmark clicked');
-                        this.bookMarkVerse(verse, verseDetail);
-                    }
-                },
+                // {
+                //     text: 'Bookmark this',
+                //     handler: () => {
+                //         console.log('bookmark clicked');
+                //         this.bookMarkVerse(verse, verseDetail);
+                //     }
+                // },
                 // {
                 //     text: 'Preview',
                 //     handler: () => {
