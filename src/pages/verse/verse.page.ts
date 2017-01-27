@@ -21,7 +21,6 @@ export class VersePage {
     ayas: Array<Verse> = [];
     pageTitle = '';
     bufferRatio = 3;
-    displayToolbarOptions = false;
 
     constructor(private elRef: ElementRef, private renderer: Renderer, private navCtrl: NavController,
         private navParams: NavParams, private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
@@ -70,23 +69,20 @@ export class VersePage {
 
     bookMarkVerse(verse: Verse, verseDetail: VerseDetail, bookmarkType: BookmarkType = BookmarkType.User) {
         console.log(verseDetail);
-        this.bookmarkService.addVerseToBookmarks(verse, verseDetail, bookmarkType)
-            .then((result: Verse) => {
-            });
+        //make current verse selected
+        this.selectCurrentVerse(verse);
+        this.bookmarkService.addVerseToBookmarks(verse, verseDetail, bookmarkType);
     }
 
     bookMarkApplicationVerse(verse: Verse, verseDetail: VerseDetail) {
         //make current verse selected
         this.selectCurrentVerse(verse);
-        this.bookmarkService.addOrUpdateApplicationBookmark(verse, verseDetail)
-            .then((result: Verse) => {
-            });
+        this.bookmarkService.addOrUpdateApplicationBookmark(verse, verseDetail);
     }
 
     displayVerseActionSheet(verse: Verse, verseDetail: VerseDetail) {
         this.selectCurrentVerse(verse);
-        // this.presentVerseActionSheet(verse, verseDetail);
-        this.displayToolbarOptions = true;
+        this.presentVerseActionSheet(verse, verseDetail);
     }
 
     presentMoreOptionsPopover(event) {
@@ -96,10 +92,14 @@ export class VersePage {
         });
     }
 
-    presentPreviewModal(verse: Verse, verseDetail: VerseDetail) {
-        console.log(verseDetail);
-        let previewModal = this.modalCtrl.create(VersePreviewModal, { verse: verse, verseDetail: verseDetail });
-        previewModal.present();
+    presentPreviewModal() {
+        //find selected verse
+        let verseToFind = this.ayas.filter((v: Verse) => v.isSelected);
+        if (verseToFind.length) {
+            let verse = verseToFind[0];
+            let previewModal = this.modalCtrl.create(VersePreviewModal, { verse: verse, verseDetail: this.verseDetail });
+            previewModal.present();
+        }
     }
 
     private scrollTo(verseIndex: number) {
@@ -120,17 +120,13 @@ export class VersePage {
     }
 
     private selectCurrentVerse(verse: Verse) {
-        //make current verse selected
-        verse.isSelected = true;
         //remove prev selected verse
         let prevSelectedVerses = this.ayas.filter((verse) => verse.isSelected);
         for (let prevVerse of prevSelectedVerses) {
             prevVerse.isSelected = false;
         }
-
-        // let hElement: HTMLElement = this.content._elementRef.nativeElement;
-        // let element = hElement.querySelector(verseKey);
-        // let oldClasses = element.getAttribute('class');
+        //make current verse selected
+        verse.isSelected = true;
     }
 
     private getElementOffset(element) {
@@ -152,13 +148,13 @@ export class VersePage {
                         this.bookMarkVerse(verse, verseDetail);
                     }
                 },
-                {
-                    text: 'Preview',
-                    handler: () => {
-                        console.log('preview clicked');
-                        this.presentPreviewModal(verse, verseDetail);
-                    }
-                },
+                // {
+                //     text: 'Preview',
+                //     handler: () => {
+                //         console.log('preview clicked');
+                //         this.presentPreviewModal(verse, verseDetail);
+                //     }
+                // },
                 {
                     text: 'Cancel',
                     role: 'cancel'
