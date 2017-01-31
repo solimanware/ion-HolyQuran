@@ -14,7 +14,7 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content>
   <ion-list [virtualScroll]="ayas" approxItemHeight="120px" approxItemWidth="100%" [bufferRatio]="bufferRatio" class="verses-listview list list-md">
     <button class="verses-listview-item item item-md" *virtualItem="let verse" (click)="bookMarkApplicationVerse(verse, verseDetail)"
       (press)="displayVerseActionSheet(verse, verseDetail)" [id]="'verse_' + verse.index" [class.verse-selected]="verse.isSelected">

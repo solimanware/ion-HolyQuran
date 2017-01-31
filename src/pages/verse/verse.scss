@@ -10,11 +10,11 @@ page-verse {
             font-size: 3.5rem;
 
             &:first-child {
-                padding-right: 20px;
+                // padding-right: 20px;
             }
             
             &.verse-selected {
-                
+                background-color: $button-ios-background-color-activated; 
             }
             .verses-listview-bismillah {
 
