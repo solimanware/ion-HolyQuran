@@ -103,8 +103,7 @@ export class VersePage {
             let previewDialog = this.alertCtrl.create({
                 title: this.pageTitle,
                 // subTitle: `${verse.text } < span > ${verse.aindex } < /span>`,
-                subTitle: '<h1>Preview dialog</h1>',
-                buttons: ['Close']
+                subTitle: '<h1>Preview dialog</h1>'
             });
             previewDialog.present();
         }
