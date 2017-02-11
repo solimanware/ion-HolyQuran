@@ -49,6 +49,8 @@ export class MyApp implements OnDestroy {
         this.settingService.get('fontSize').then(fontSize => {
           if (fontSize) {
             this.applicationFontSize = fontSize + 'px';
+          } else {
+            this.settingService.put('fontSize', this.baseFontSize);
           }
         });
         //hide splash screen

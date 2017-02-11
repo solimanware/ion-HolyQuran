@@ -5,12 +5,14 @@
 </ion-header>
 <ion-content>
     <ion-list no-lines [virtualScroll]="juzs" class="pq-listview juzs-listview">
-        <button ion-item detail-none *virtualItem="let juz" approxItemHeight="125px" class="pq-listview-item juzs-listview-item" (click)="goToVerses($event, juz)">
+        <button ion-item detail-none *virtualItem="let juz" approxItemHeight="125px" 
+        class="pq-listview-item juzs-listview-item" 
+        (click)="goToVerses($event, juz)">
     <h3 class="pq-listview-detail juzs-listview-detail">
       {{ juz.sura }}
     </h3>
     <p class="pq-listview-sub-detail juzs-listview-sub-detail">
-      sub detail
+      {{ juz.sura }} - Starting at Surah: {{juz.sura}}, Ayah: {{juz.aya}}
     </p>
   </button>
     </ion-list>
