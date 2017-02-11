@@ -101,9 +101,8 @@ export class VersePage {
         if (verseToFind.length) {
             let verse = verseToFind[0];
             let previewDialog = this.alertCtrl.create({
-                title: this.pageTitle,
-                // subTitle: `${verse.text } < span > ${verse.aindex } < /span>`,
-                subTitle: '<h1>Preview dialog</h1>'
+                title: verse.aindex,
+                subTitle: verse.text,
             });
             previewDialog.present();
         }
