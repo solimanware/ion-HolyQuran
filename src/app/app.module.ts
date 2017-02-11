@@ -24,7 +24,7 @@ import { SettingService } from '../pages/setting/setting.service';
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
-      tabsHideOnSubPages: true
+      tabsHideOnSubPages: true 
     }
     )],
   bootstrap: [IonicApp],

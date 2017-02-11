@@ -39,10 +39,13 @@ export class VersePage {
         this.loader.present();
         this.verseService.getBySurahId(this.verseParams.suraIndex).then((verse) => {
             this.verseDetail = verse;
-            this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
+            console.log('VerseDetail');
+            console.log(this.verseDetail);
+            // this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
+            this.pageTitle = `(${this.verseDetail.index}) ${this.verseParams.suraName} - (${this.verseDetail.juz}) Juz`;
             this.ayas = verse.aya;
             console.log('firing');
-        }).then(() => {
+        }).then(() => { 
             console.log('complete');
             if (this.verseParams.verseIndex) {
                 //scroll to verse
@@ -115,6 +118,8 @@ export class VersePage {
         let element = hElement.querySelector(verseKey);
         let offset = this.getElementOffset(element);
         console.log(offset);
+        //its going too far. Let's decrease it.
+        offset.top -= 45;
         this.content.scrollTo(0, offset.top)
         //make current verse selected
         let verseToFind = this.ayas.find((x: Verse) => x.index == this.verseParams.verseIndex);
@@ -147,20 +152,20 @@ export class VersePage {
         let actionSheet = this.actionSheetCtrl.create({
             title: 'Choose',
             buttons: [
-                // {
-                //     text: 'Bookmark this',
-                //     handler: () => {
-                //         console.log('bookmark clicked');
-                //         this.bookMarkVerse(verse, verseDetail);
-                //     }
-                // },
-                // {
-                //     text: 'Preview',
-                //     handler: () => {
-                //         console.log('preview clicked');
-                //         this.presentPreviewModal(verse, verseDetail);
-                //     }
-                // },
+                {
+                    text: 'Bookmark this',
+                    handler: () => {
+                        console.log('bookmark clicked');
+                        this.bookMarkVerse();
+                    }
+                },
+                {
+                    text: 'Preview',
+                    handler: () => {
+                        console.log('preview clicked');
+                        this.presentPreviewModal();
+                    }
+                },
                 {
                     text: 'Cancel',
                     role: 'cancel'

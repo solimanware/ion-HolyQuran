@@ -43,9 +43,10 @@ export class SuraPage implements OnInit {
     }
 
     goToVerses(event, sura: Sura) {
+        //TODO:pass sura name based on current language
         let params: VerseParams = {
             suraIndex: sura.index,
-            suraName: sura.name
+            suraName: sura.tname
         };
         this.navCtrl.push(VersePage, params);
         let elment = this.helperService.findAncestor(event.target, 'surahs-listview-item');
