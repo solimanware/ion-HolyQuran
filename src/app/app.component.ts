@@ -45,7 +45,6 @@ export class MyApp implements OnDestroy {
 
       this.quranService.syncData(() => {
         this.rootPage = QuranPage;
-
         //set font
         this.settingService.get('fontSize').then(fontSize => {
           if (fontSize) {

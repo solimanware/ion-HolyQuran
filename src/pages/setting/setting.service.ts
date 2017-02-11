@@ -15,7 +15,10 @@ export class SettingService {
     get(key: string) {
         return this.dbService.get(this.schemaService.tables.setting, key)
             .then(setting => {
-                return setting.value;
+                if (setting) {
+                    return setting.value;
+                }
+                return null;
             });
     }
 

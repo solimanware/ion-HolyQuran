@@ -1,27 +1,26 @@
 <ion-header>
-  <ion-navbar>
-    <!--<ion-title>{{pageTitle}}</ion-title>-->
-    <ion-buttons end>
-      <button ion-button icon-only color="royal" (click)="presentPreviewModal()">
+    <ion-navbar>
+        <!--<ion-title>{{pageTitle}}</ion-title>-->
+        <ion-buttons end>
+            <button ion-button icon-only color="royal" (click)="presentPreviewModal()">
         <ion-icon name="ios-search"></ion-icon>
       </button>
-      <button ion-button icon-only color="royal" (click)="bookMarkVerse()">
+            <button ion-button icon-only color="royal" (click)="bookMarkVerse()">
         <ion-icon name="ios-bookmark"></ion-icon>
       </button>
-      <!--<button ion-button (click)="presentMoreOptionsPopover($event)">
+            <!--<button ion-button (click)="presentMoreOptionsPopover($event)">
             <ion-icon name="more"></ion-icon>
         </button>-->
-    </ion-buttons>
-  </ion-navbar>
+        </ion-buttons>
+    </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-list [virtualScroll]="ayas" approxItemHeight="120px" approxItemWidth="100%" [bufferRatio]="bufferRatio" class="verses-listview list list-md">
-    <button class="verses-listview-item item item-md" *virtualItem="let verse" (click)="bookMarkApplicationVerse(verse, verseDetail)"
-      (press)="displayVerseActionSheet(verse, verseDetail)" [id]="'verse_' + verse.index" [class.verse-selected]="verse.isSelected">
-      <!--<div class="verses-listview-bismillah" *ngIf="verse.bismillah">{{ verse.bismillah }}</div>-->
+    <ion-list [virtualScroll]="ayas" approxItemHeight="120px" approxItemWidth="100%" [bufferRatio]="bufferRatio" class="verses-listview list list-md">
+        <button class="verses-listview-item item item-md" *virtualItem="let verse" (click)="bookMarkApplicationVerse(verse, verseDetail)" (press)="displayVerseActionSheet(verse, verseDetail)" [id]="'verse_' + verse.index" [class.verse-selected]="verse.isSelected">
+      <div class="verses-listview-bismillah" *ngIf="verse.bismillah">{{ verse.bismillah }}</div>
       <div class="verses-listview-text">
-        <!--{{ verse.text }}<span>{{verse.aindex}}</span>-->My Text
+        {{ verse.text }}<span>{{verse.aindex}}</span>
       </div>
       </button>
-  </ion-list>
+    </ion-list>
 </ion-content>
