@@ -29,17 +29,16 @@ export class QuranService {
                 this.metadataService.count().then((data: number) => {
                     if (data == 0) {
                         let metaData = res[0];
-                        this.metadataService.put('hizbs', metaData.quran.hizbs);
+                        // this.metadataService.put('hizbs', metaData.quran.hizbs);
                         this.metadataService.put('juzs', metaData.quran.juzs);
-                        this.metadataService.put('manzils', metaData.quran.manzils);
-                        this.metadataService.put('pages', metaData.quran.pages);
-                        this.metadataService.put('rukus', metaData.quran.rukus);
-                        this.metadataService.put('sajdas', metaData.quran.sajdas);
-
-                        for (let sr = 0; sr < metaData.quran.suras.length; sr++) {
-                            let sura = metaData.quran.suras[sr];
+                        // this.metadataService.put('manzils', metaData.quran.manzils);
+                        // this.metadataService.put('pages', metaData.quran.pages);
+                        // this.metadataService.put('rukus', metaData.quran.rukus);
+                        // this.metadataService.put('sajdas', metaData.quran.sajdas);
+                        for (let sr = 0; sr < metaData.quran.suras.sura.length; sr++) {
+                            let sura = metaData.quran.suras.sura[sr];
                             sura.aindex = this.convertNumberalToArabic(sura.index);
-                            metaData.quran.suras[sr] = sura;
+                            metaData.quran.suras.sura[sr] = sura;
                         }
                         this.metadataService.put('suras', metaData.quran.suras);
                         let verses = res[1];

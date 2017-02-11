@@ -1,18 +1,19 @@
 <ion-header>
-  <ion-navbar>
-    <!--<ion-title>Surahs</ion-title>-->
-  </ion-navbar>
+    <ion-navbar>
+        <!--<ion-title>Surahs</ion-title>-->
+    </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-list no-lines [virtualScroll]="juzs" class="pq-listview juzs-listview">
-    <button ion-item detail-none *virtualItem="let juz" approxItemHeight="125px" class="pq-listview-item juzs-listview-item" (click)="goToVerses($event, juz)">
-    <!--<h2 class="surahs-listview-name">{{ surah.name }}</h2>-->
+    <ion-list no-lines [virtualScroll]="juzs" class="pq-listview juzs-listview">
+        <button ion-item detail-none *virtualItem="let juz" approxItemHeight="125px" 
+        class="pq-listview-item juzs-listview-item" 
+        (click)="goToVerses($event, juz)">
     <h3 class="pq-listview-detail juzs-listview-detail">
-      detail
+      {{ juz.sura }}
     </h3>
     <p class="pq-listview-sub-detail juzs-listview-sub-detail">
-      sub detail
+      {{ juz.sura }} - Starting at Surah: {{juz.sura}}, Ayah: {{juz.aya}}
     </p>
   </button>
-  </ion-list>
+    </ion-list>
 </ion-content>

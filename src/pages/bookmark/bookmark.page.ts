@@ -24,7 +24,7 @@ export class BookmarkPage {
     goToVerse(bookmark: Bookmark) {
         let params: VerseParams = {
             suraIndex: bookmark.sura.index,
-            suraName: bookmark.sura.name,
+            suraName: bookmark.sura.tname,
             verseIndex: bookmark.index
         };
 
