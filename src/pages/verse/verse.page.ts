@@ -1,12 +1,11 @@
 import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
-import { Content, NavController, NavParams, ActionSheetController, PopoverController, LoadingController, ModalController } from 'ionic-angular';
+import { Content, NavController, NavParams, ActionSheetController, PopoverController, LoadingController, AlertController } from 'ionic-angular';
 
 import { VerseService } from './verse.service';
 import { BookmarkService } from '../bookmark/bookmark.service';
 import { Bookmark, BookmarkType } from '../bookmark/bookmark';
 import { Verse, VerseParams, VerseDetail } from './verse';
-import { VersePreviewModal } from './modal/verse-preview.page';
-import { MoreOptionsPopoverPage } from './more-options-popover.page';
+import { MoreOptionsPopoverPage } from './more-options-popover.page'; 
 
 @Component({
     selector: 'page-verse',
@@ -21,11 +20,10 @@ export class VersePage {
     ayas: Array<Verse> = [];
     pageTitle = '';
     bufferRatio = 3;
-    displayToolbarOptions = false;
 
     constructor(private elRef: ElementRef, private renderer: Renderer, private navCtrl: NavController,
         private navParams: NavParams, private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
-        private loadingCtrl: LoadingController, public modalCtrl: ModalController
+        private loadingCtrl: LoadingController, private alertCtrl: AlertController
         , private verseService: VerseService, private bookmarkService: BookmarkService) {
         this.verseParams = this.navParams.data;
         //cache loader
@@ -41,10 +39,13 @@ export class VersePage {
         this.loader.present();
         this.verseService.getBySurahId(this.verseParams.suraIndex).then((verse) => {
             this.verseDetail = verse;
-            this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
+            console.log('VerseDetail');
+            console.log(this.verseDetail);
+            // this.pageTitle = `القرآن - (${this.verseDetail.aindex}) ${this.verseParams.suraName} - ${this.verseDetail.ajuz} جزء‎‎`;
+            this.pageTitle = `(${this.verseDetail.index}) ${this.verseParams.suraName} - (${this.verseDetail.juz}) Juz`;
             this.ayas = verse.aya;
             console.log('firing');
-        }).then(() => {
+        }).then(() => { 
             console.log('complete');
             if (this.verseParams.verseIndex) {
                 //scroll to verse
@@ -68,25 +69,26 @@ export class VersePage {
         });
     }
 
-    bookMarkVerse(verse: Verse, verseDetail: VerseDetail, bookmarkType: BookmarkType = BookmarkType.User) {
-        console.log(verseDetail);
-        this.bookmarkService.addVerseToBookmarks(verse, verseDetail, bookmarkType)
-            .then((result: Verse) => {
-            });
+    bookMarkVerse() {
+        //find selected verse
+        let verseToFind = this.ayas.filter((v: Verse) => v.isSelected);
+        if (verseToFind.length) {
+            let verse = verseToFind[0];
+            //make current verse selected
+            this.selectCurrentVerse(verse);
+            this.bookmarkService.addVerseToBookmarks(verse, this.verseDetail, BookmarkType.User);
+        }
     }
 
     bookMarkApplicationVerse(verse: Verse, verseDetail: VerseDetail) {
         //make current verse selected
         this.selectCurrentVerse(verse);
-        this.bookmarkService.addOrUpdateApplicationBookmark(verse, verseDetail)
-            .then((result: Verse) => {
-            });
+        this.bookmarkService.addOrUpdateApplicationBookmark(verse, verseDetail);
     }
 
     displayVerseActionSheet(verse: Verse, verseDetail: VerseDetail) {
         this.selectCurrentVerse(verse);
-        // this.presentVerseActionSheet(verse, verseDetail);
-        this.displayToolbarOptions = true;
+        this.presentVerseActionSheet(verse, verseDetail);
     }
 
     presentMoreOptionsPopover(event) {
@@ -96,10 +98,17 @@ export class VersePage {
         });
     }
 
-    presentPreviewModal(verse: Verse, verseDetail: VerseDetail) {
-        console.log(verseDetail);
-        let previewModal = this.modalCtrl.create(VersePreviewModal, { verse: verse, verseDetail: verseDetail });
-        previewModal.present();
+    presentPreviewModal() {
+        //find selected verse
+        let verseToFind = this.ayas.filter((v: Verse) => v.isSelected);
+        if (verseToFind.length) {
+            let verse = verseToFind[0];
+            let previewDialog = this.alertCtrl.create({
+                title: verse.aindex,
+                subTitle: verse.text,
+            });
+            previewDialog.present();
+        }
     }
 
     private scrollTo(verseIndex: number) {
@@ -109,6 +118,8 @@ export class VersePage {
         let element = hElement.querySelector(verseKey);
         let offset = this.getElementOffset(element);
         console.log(offset);
+        //its going too far. Let's decrease it.
+        offset.top -= 45;
         this.content.scrollTo(0, offset.top)
         //make current verse selected
         let verseToFind = this.ayas.find((x: Verse) => x.index == this.verseParams.verseIndex);
@@ -120,17 +131,13 @@ export class VersePage {
     }
 
     private selectCurrentVerse(verse: Verse) {
-        //make current verse selected
-        verse.isSelected = true;
         //remove prev selected verse
         let prevSelectedVerses = this.ayas.filter((verse) => verse.isSelected);
         for (let prevVerse of prevSelectedVerses) {
             prevVerse.isSelected = false;
         }
-
-        // let hElement: HTMLElement = this.content._elementRef.nativeElement;
-        // let element = hElement.querySelector(verseKey);
-        // let oldClasses = element.getAttribute('class');
+        //make current verse selected
+        verse.isSelected = true;
     }
 
     private getElementOffset(element) {
@@ -149,14 +156,14 @@ export class VersePage {
                     text: 'Bookmark this',
                     handler: () => {
                         console.log('bookmark clicked');
-                        this.bookMarkVerse(verse, verseDetail);
+                        this.bookMarkVerse();
                     }
                 },
                 {
                     text: 'Preview',
                     handler: () => {
                         console.log('preview clicked');
-                        this.presentPreviewModal(verse, verseDetail);
+                        this.presentPreviewModal();
                     }
                 },
                 {

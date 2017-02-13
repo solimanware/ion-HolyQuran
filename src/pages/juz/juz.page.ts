@@ -38,7 +38,7 @@ export class JuzPage implements OnInit {
             let params: VerseParams = {
                 suraIndex: parseInt(juz.sura),
                 verseIndex: parseInt(juz.aya),
-                suraName: sura.name
+                suraName: sura.tname
             };
             this.navCtrl.push(VersePage, params);
             let elment = this.helperService.findAncestor(event.target, 'juzs-listview-item');

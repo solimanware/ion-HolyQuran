@@ -1,37 +1,36 @@
 <ion-header>
-  <ion-navbar>
-    <!--<ion-title>Surahs</ion-title>-->
-  </ion-navbar>
+    <ion-navbar>
+        <!--<ion-title>Surahs</ion-title>-->
+    </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-list no-lines class="bookmarks-listview" show-delete="shouldShowDelete">
-    <ion-item-sliding  *ngFor="let bookmark of bookmarks">
-      <button ion-item detail-none class="bookmarks-listview-item" (click)="goToVerse(bookmark)">
+    <ion-list no-lines class="bookmarks-listview" show-delete="shouldShowDelete">
+        <ion-item-sliding *ngFor="let bookmark of bookmarks">
+            <button ion-item detail-none class="bookmarks-listview-item" (click)="goToVerse(bookmark)">
         <h2>
           <ion-grid>
             <ion-row>
               <ion-col width-50>
                 <div class="bookmarks-listview-index">
-                  {{bookmark.index}}
-                  <!--<div class="bookmarks-listview-index-ar">{{bookmark.sura.aindex}}:{{bookmark.aindex}}</div>-->
-                  <!--<div class="bookmarks-listview-index-en">{{bookmark.sura.index}}:{{bookmark.index}}</div>-->
+                  <div class="bookmarks-listview-index-ar">{{bookmark.sura.aindex}}:{{bookmark.aindex}}</div>
+                  <div class="bookmarks-listview-index-en">{{bookmark.sura.index}}:{{bookmark.index}}</div>
                 </div>
               </ion-col>
               <ion-col width-50>
                 <div class="bookmarks-listview-name">
-                  <!--<div class="bookmarks-listview-name-ar">{{bookmark.sura.name}}</div>
-                  <div class="bookmarks-listview-name-en">{{bookmark.sura.tname}}</div>-->
+                  <div class="bookmarks-listview-name-ar">{{bookmark.sura.name}}</div>
+                  <div class="bookmarks-listview-name-en">{{bookmark.sura.tname}}</div>
                 </div>
               </ion-col>
             </ion-row>
           </ion-grid>
         </h2>
     </button>
-      <ion-item-options side="right">
-        <button ion-button color="danger" (click)="removeBookmark(bookmark)">
-            <ion-icon name="trash"></ion-icon> Delete
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
-  </ion-list>
+            <ion-item-options side="right">
+                <button ion-button color="danger" (click)="removeBookmark(bookmark)">
+              <ion-icon name="trash"></ion-icon> Delete
+          </button>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
 </ion-content>

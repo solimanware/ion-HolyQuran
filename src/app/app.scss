@@ -42,10 +42,13 @@ ion-title {
   .pq-listview-item {
     overflow: visible;
     font-size: inherit;
+    padding: 0;
     .pq-listview-name {
       font-size: 1.9em;
       font-family: 'KFGQPC Uthmanic Script HAFS';
       font-weight: bold;
+      word-wrap: break-word;
+      white-space: normal;
     }
     .pq-listview-detail {
       font-family: 'Open Sans';
@@ -60,4 +63,8 @@ ion-title {
       font-size: 1em;
     }
   }
+}
+
+.toolbar-title {
+  font-size: 1.2em;
 }
