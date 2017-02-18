@@ -1,12 +1,13 @@
 import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
-import { Content, NavController, NavParams, ActionSheetController, PopoverController, LoadingController, AlertController } from 'ionic-angular';
+import { Content, NavController, NavParams, ActionSheetController, PopoverController, LoadingController, AlertController, Gesture } from 'ionic-angular';
 
 import { VerseService } from './verse.service';
 import { BookmarkService } from '../bookmark/bookmark.service';
 import { Bookmark, BookmarkType } from '../bookmark/bookmark';
 import { Verse, VerseParams, VerseDetail } from './verse';
-import { MoreOptionsPopoverPage } from './more-options-popover.page'; 
-import _ from 'lodash';
+import { MoreOptionsPopoverPage } from './more-options-popover.page';
+import { SettingService } from '../setting/setting.service';
+import { EventPublisher } from '../../shared/shared';
 
 @Component({
     selector: 'page-verse',
@@ -17,8 +18,9 @@ export class VersePage {
     private verseParams: VerseParams;
     private loader;
     private i = 0;
-        // Init a timeout variable to be used below
+    // Init a timeout variable to be used below
     private timeout = null;
+    pressGesture: Gesture;
 
 
     verseDetail: any;
@@ -29,7 +31,8 @@ export class VersePage {
     constructor(private elRef: ElementRef, private renderer: Renderer, private navCtrl: NavController,
         private navParams: NavParams, private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
         private loadingCtrl: LoadingController, private alertCtrl: AlertController
-        , private verseService: VerseService, private bookmarkService: BookmarkService) {
+        , private verseService: VerseService, private bookmarkService: BookmarkService, private settingService: SettingService
+        , private eventPublisher: EventPublisher) {
         this.verseParams = this.navParams.data;
         //cache loader
         this.loader = this.loadingCtrl.create({
@@ -50,7 +53,7 @@ export class VersePage {
             this.pageTitle = `(${this.verseDetail.index}) ${this.verseParams.suraName} - (${this.verseDetail.juz}) Juz`;
             this.ayas = verse.aya;
             console.log('firing');
-        }).then(() => { 
+        }).then(() => {
             console.log('complete');
             if (this.verseParams.verseIndex) {
                 //scroll to verse
@@ -72,9 +75,21 @@ export class VersePage {
         }).catch(() => {
             this.loader.dismiss();
         });
+        this.pressGesture = new Gesture(this.content._elementRef.nativeElement);
+        this.pressGesture.listen();
+        this.pressGesture.on('pinch', e => {
+            console.log('pinch');
+            if(e.additionalEvent === 'pinchin'){
+                this.i++;
+                console.log(this.i);
+            } else if(e.additionalEvent === 'pinchout'){
+                this.i--;
+            }
+            // console.log(e);
+        })
     }
 
-    touchmove(e){
+    touchmove(e) {
         console.log('moving');
         // Clear the timeout if it has already been set.
         // This will prevent the previous task from executing
@@ -92,12 +107,18 @@ export class VersePage {
         // debounced();
     }
 
-    touchend(e){
-        setTimeout(() => {
-            console.log(e);
-            console.log('touch end' + this.i);
-        }, 350);
-
+    touchend(e) {
+        //set font
+        this.settingService.get('fontSize').then(fontSize => {
+            if (fontSize) {
+                setTimeout(() => {
+                    console.log(e);
+                    fontSize = fontSize + this.i;
+                    console.log('touch end' + fontSize);
+                    this.eventPublisher.fontSizeChanged(fontSize);
+                }, 350);
+            }
+        });
     }
 
     bookMarkVerse() {
