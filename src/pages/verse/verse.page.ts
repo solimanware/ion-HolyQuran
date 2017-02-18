@@ -6,6 +6,7 @@ import { BookmarkService } from '../bookmark/bookmark.service';
 import { Bookmark, BookmarkType } from '../bookmark/bookmark';
 import { Verse, VerseParams, VerseDetail } from './verse';
 import { MoreOptionsPopoverPage } from './more-options-popover.page'; 
+import _ from 'lodash';
 
 @Component({
     selector: 'page-verse',
@@ -15,6 +16,10 @@ export class VersePage {
     @ViewChild(Content) content: Content;
     private verseParams: VerseParams;
     private loader;
+    private i = 0;
+        // Init a timeout variable to be used below
+    private timeout = null;
+
 
     verseDetail: any;
     ayas: Array<Verse> = [];
@@ -67,6 +72,32 @@ export class VersePage {
         }).catch(() => {
             this.loader.dismiss();
         });
+    }
+
+    touchmove(e){
+        console.log('moving');
+        // Clear the timeout if it has already been set.
+        // This will prevent the previous task from executing
+        // if it has been less than <MILLISECONDS>
+        clearTimeout(this.timeout);
+        // Make a new timeout set to go off in 800ms
+        this.timeout = setTimeout(() => {
+            this.i++;
+            console.log('Input Value');
+        }, 300);
+        // var debounced = _.debounce(() => {
+        //     console.log('debounc');
+        //     this.i++;
+        // }, 5000);
+        // debounced();
+    }
+
+    touchend(e){
+        setTimeout(() => {
+            console.log(e);
+            console.log('touch end' + this.i);
+        }, 350);
+
     }
 
     bookMarkVerse() {

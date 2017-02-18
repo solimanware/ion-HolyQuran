@@ -1,20 +1,20 @@
 <ion-header>
     <ion-navbar>
         <ion-title>{{pageTitle}}</ion-title>
-        <!--<ion-buttons end>-->
+        <ion-buttons end>
             <!--<button ion-button icon-only color="royal" (click)="presentPreviewModal()">
         <ion-icon name="ios-search"></ion-icon>
       </button>
             <button ion-button icon-only color="royal" (click)="bookMarkVerse()">
         <ion-icon name="ios-bookmark"></ion-icon>
       </button>-->
-        <!--<button ion-button (click)="presentMoreOptionsPopover($event)">
+        <button ion-button (click)="presentMoreOptionsPopover($event)">
             <ion-icon name="more"></ion-icon>
-        </button>-->
-        <!--</ion-buttons>  -->
+        </button>
+        </ion-buttons>  
     </ion-navbar>
 </ion-header>
-<ion-content> 
+<ion-content (touchmove)="touchmove($event)" (touchend)="touchend($event)"> 
     <ion-list no-lines [virtualScroll]="ayas" approxItemHeight="120px" approxItemWidth="100%" [bufferRatio]="bufferRatio" 
         class="pq-listview verses-listview">
         <button ion-item detail-none class="pq-listview-item verses-listview-item" *virtualItem="let verse" 
