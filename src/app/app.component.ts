@@ -30,8 +30,8 @@ export class MyApp implements OnDestroy {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Bookmark', component: BookmarkPage },
-      { title: 'Surah', component: SuraPage },
+      // { title: 'Bookmark', component: BookmarkPage },
+      { title: 'Quran', component: QuranPage },
       { title: 'Settings', component: SettingPage }
     ];
 

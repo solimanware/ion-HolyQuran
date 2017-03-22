@@ -7,7 +7,7 @@ import { BookmarkPage } from '../bookmark/bookmark.page';
   template: `
     <ion-list>
       <ion-list-header>Choose</ion-list-header>
-      <button ion-item (click)="goToPageBookmark()">Bookmarks</button>
+      <button ion-item detail-none (click)="goToPageBookmark()">Bookmarks</button>
     </ion-list>
   `
 })
