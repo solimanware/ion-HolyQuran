@@ -52,7 +52,6 @@ export class QuranService {
                             verses[i].aya = ayas;
                             this.verseService.put(verses[i]);
                         }
-                        console.log('done');
                         if (successCallback)
                             successCallback();
                     } else {
@@ -62,7 +61,6 @@ export class QuranService {
                 });
             },
             (error) => {
-                console.log('error');
                 if (errorCallback)
                     errorCallback(error);
             });

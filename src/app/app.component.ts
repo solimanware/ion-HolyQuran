@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnDestroy, HostBinding } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, LoadingController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { SuraPage, BookmarkPage, QuranPage, SettingPage } from '../pages/shared';
@@ -21,11 +21,15 @@ export class MyApp implements OnDestroy {
   rootPage: any;
   pages: Array<{ title: string, component: any }>;
   subscription: Subscription;
+    private loader;
 
-  constructor(public platform: Platform
+  constructor(public platform: Platform, private loadingCtrl: LoadingController
     , private quranService: QuranService, private eventPublisher: EventPublisher
     , private settingService: SettingService) {
-
+    //cache loader
+    this.loader = this.loadingCtrl.create({
+        content: "Please wait..."
+    });
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -39,12 +43,12 @@ export class MyApp implements OnDestroy {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
-
+      this.loader.present();
       this.quranService.syncData(() => {
         this.rootPage = QuranPage;
+        this.loader.dismiss();
+        
         //set font
         this.settingService.get('fontSize').then(fontSize => {
           if (fontSize) {
