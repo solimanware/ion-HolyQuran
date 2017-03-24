@@ -23,7 +23,9 @@ export class SuraPage implements OnInit {
     }
 
     ngOnInit() {
+        console.log('ngOnInit')
         this.surahService.getAll().then((surahs: Array<Sura>) => {
+                    console.log('getAll')
             this.surahs = surahs;
         });
     }

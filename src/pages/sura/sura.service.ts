@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { Sura } from './sura';
+
 import { DbService } from '../../shared/db.service';
 import { SchemaService } from '../../shared/schema.service';
 import { MetaDataService } from '../../shared/metadata.service';
