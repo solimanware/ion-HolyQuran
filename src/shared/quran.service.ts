@@ -55,6 +55,9 @@ export class QuranService {
                         console.log('done');
                         if (successCallback)
                             successCallback();
+                    } else {
+                        if (successCallback)
+                            successCallback();
                     }
                 });
             },
