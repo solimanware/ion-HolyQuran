@@ -1,11 +1,14 @@
 import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
-import { Content, NavController, NavParams, ActionSheetController, PopoverController, LoadingController, AlertController } from 'ionic-angular';
+import { Content, MenuController, NavController, NavParams, ActionSheetController, PopoverController, LoadingController, AlertController, Gesture } from 'ionic-angular';
+import { Observable } from 'rxjs/Rx';
 
 import { VerseService } from './verse.service';
 import { BookmarkService } from '../bookmark/bookmark.service';
 import { Bookmark, BookmarkType } from '../bookmark/bookmark';
 import { Verse, VerseParams, VerseDetail } from './verse';
-import { MoreOptionsPopoverPage } from './more-options-popover.page'; 
+import { MoreOptionsPopoverPage } from './more-options-popover.page';
+import { SettingService } from '../setting/setting.service';
+import { EventPublisher } from '../../shared/shared';
 
 @Component({
     selector: 'page-verse',
@@ -15,16 +18,23 @@ export class VersePage {
     @ViewChild(Content) content: Content;
     private verseParams: VerseParams;
     private loader;
+    private i = 0;
+    // Init a timeout variable to be used below
+    private timeout = null;
+    private baseFont = 0;
 
+    pressGesture: Gesture;
     verseDetail: any;
     ayas: Array<Verse> = [];
     pageTitle = '';
     bufferRatio = 3;
+    approxItemHeight = "120px";
 
     constructor(private elRef: ElementRef, private renderer: Renderer, private navCtrl: NavController,
         private navParams: NavParams, private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
         private loadingCtrl: LoadingController, private alertCtrl: AlertController
-        , private verseService: VerseService, private bookmarkService: BookmarkService) {
+        , private verseService: VerseService, private bookmarkService: BookmarkService, private settingService: SettingService
+        , private eventPublisher: EventPublisher, private menu: MenuController) {
         this.verseParams = this.navParams.data;
         //cache loader
         this.loader = this.loadingCtrl.create({
@@ -34,7 +44,7 @@ export class VersePage {
 
     ionViewWillEnter() {
         // document.getElementById("ion-header")[0].style.display = "none";
-
+        // this.menu.swipeEnable(false);
         console.log(this.navParams.data);
         this.loader.present();
         this.verseService.getBySurahId(this.verseParams.suraIndex).then((verse) => {
@@ -45,7 +55,7 @@ export class VersePage {
             this.pageTitle = `(${this.verseDetail.index}) ${this.verseParams.suraName} - (${this.verseDetail.juz}) Juz`;
             this.ayas = verse.aya;
             console.log('firing');
-        }).then(() => { 
+        }).then(() => {
             console.log('complete');
             if (this.verseParams.verseIndex) {
                 //scroll to verse
@@ -67,7 +77,96 @@ export class VersePage {
         }).catch(() => {
             this.loader.dismiss();
         });
+        // this.pressGesture = new Gesture(this.content._elementRef.nativeElement);
+        // this.pressGesture.listen();
+        // const pinch = Observable.fromEvent(this.pressGesture, 'pinch')
+        //     .debounceTime(500);
+        // pinch.subscribe(e => {
+        //     // if(e.additionalEvent === 'pinchin'){
+
+        //     // } else if(e.additionalEvent === 'pinchout'){
+
+        //     // }
+        // });
+
+        // this.pressGesture.on('pinch', e => {
+        //     // console.log(e);
+        //     if(e.additionalEvent === 'pinchin'){
+
+        //     } else if(e.additionalEvent === 'pinchout'){
+        //         console.log('pinchout');
+        //         // Clear the timeout if it has already been set.
+        //         // This will prevent the previous task from executing
+        //         // if it has been less than <MILLISECONDS>
+        //         clearTimeout(this.timeout);
+        //         // Make a new timeout set to go off in 800ms
+        //         this.timeout = setTimeout(() => {
+        //             this.i++;
+        //             console.log(this.i);
+        //         }, 1000);
+
+        //     }
+        //     // if(e.additionalEvent === 'pinchin'){
+        //     //     console.log('pinchin');
+        //     //     this.i--;
+        //     //     var fontSize = this.baseFont + this.i;
+        //     //     this.eventPublisher.fontSizeChanged(fontSize);
+        //     // } else if(e.additionalEvent === 'pinchout'){
+        //     //     console.log('pinchout');
+        //     //     this.i++;
+        //     //     var fontSize = this.baseFont + this.i;
+        //     //     console.log(this.i);
+        //     //     console.log(fontSize);
+        //     //     this.approxItemHeight = (this.i*10) + "px";
+        //     //     this.eventPublisher.fontSizeChanged(fontSize);
+        //     // }
+        //     // console.log(e);
+        // });
+
+        this.settingService.get('fontSize').then(fontSize => {
+            if (fontSize) {
+                this.baseFont = fontSize;
+                // setTimeout(() => {
+                //     console.log(e);
+                //     fontSize = fontSize + this.i;
+                //     console.log('touch end' + fontSize);
+                //     this.eventPublisher.fontSizeChanged(fontSize);
+                // }, 350);
+            }
+        });
     }
+
+    touchmove(e) {
+        console.log('moving');
+        // Clear the timeout if it has already been set.
+        // This will prevent the previous task from executing
+        // if it has been less than <MILLISECONDS>
+        clearTimeout(this.timeout);
+        // Make a new timeout set to go off in 800ms
+        this.timeout = setTimeout(() => {
+            this.i++;
+            console.log('Input Value');
+        }, 300);
+        // var debounced = _.debounce(() => {
+        //     console.log('debounc');
+        //     this.i++;
+        // }, 5000);
+        // debounced();
+    }
+
+    // touchend(e) {
+    //     //set font
+    //     this.settingService.get('fontSize').then(fontSize => {
+    //         if (fontSize) {
+    //             setTimeout(() => {
+    //                 console.log(e);
+    //                 fontSize = fontSize + this.i;
+    //                 console.log('touch end' + fontSize);
+    //                 this.eventPublisher.fontSizeChanged(fontSize);
+    //             }, 350);
+    //         }
+    //     });
+    // }
 
     bookMarkVerse() {
         //find selected verse
@@ -98,18 +197,18 @@ export class VersePage {
         });
     }
 
-    presentPreviewModal() {
-        //find selected verse
-        let verseToFind = this.ayas.filter((v: Verse) => v.isSelected);
-        if (verseToFind.length) {
-            let verse = verseToFind[0];
-            let previewDialog = this.alertCtrl.create({
-                title: verse.aindex,
-                subTitle: verse.text,
-            });
-            previewDialog.present();
-        }
-    }
+    // presentPreviewModal() {
+    //     //find selected verse
+    //     let verseToFind = this.ayas.filter((v: Verse) => v.isSelected);
+    //     if (verseToFind.length) {
+    //         let verse = verseToFind[0];
+    //         let previewDialog = this.alertCtrl.create({
+    //             title: verse.aindex,
+    //             subTitle: verse.text,
+    //         });
+    //         previewDialog.present();
+    //     }
+    // }
 
     private scrollTo(verseIndex: number) {
         let verseKey = '#verse_' + verseIndex;
@@ -159,13 +258,13 @@ export class VersePage {
                         this.bookMarkVerse();
                     }
                 },
-                {
-                    text: 'Preview',
-                    handler: () => {
-                        console.log('preview clicked');
-                        this.presentPreviewModal();
-                    }
-                },
+                // {
+                //     text: 'Preview',
+                //     handler: () => {
+                //         console.log('preview clicked');
+                //         // this.presentPreviewModal();
+                //     }
+                // },
                 {
                     text: 'Cancel',
                     role: 'cancel'

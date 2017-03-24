@@ -52,19 +52,18 @@ export class QuranService {
                             verses[i].aya = ayas;
                             this.verseService.put(verses[i]);
                         }
+                        if (successCallback)
+                            successCallback();
+                    } else {
+                        if (successCallback)
+                            successCallback();
                     }
                 });
             },
             (error) => {
-                console.log('error');
                 if (errorCallback)
                     errorCallback(error);
-            },
-            () => {
-                console.log('successCallback');
-                if (successCallback)
-                    successCallback();
-            })
+            });
     }
 
     getMetaData() {

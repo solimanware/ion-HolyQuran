@@ -4,33 +4,33 @@
   "homepage": "http://ionicframework.com/",
   "private": true,
   "scripts": {
+    "clean": "ionic-app-scripts clean",
+    "build": "ionic-app-scripts build",
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve"
   },
-  "dependencies": {
-    "@angular/common": "2.1.1",
-    "@angular/compiler": "2.1.1",
-    "@angular/compiler-cli": "2.1.1",
-    "@angular/core": "2.1.1",
-    "@angular/forms": "2.1.1",
-    "@angular/http": "2.1.1",
-    "@angular/platform-browser": "2.1.1",
-    "@angular/platform-browser-dynamic": "2.1.1",
-    "@angular/platform-server": "2.1.1",
-    "@ionic/storage": "1.1.6",
-    "ionic-angular": "2.0.0-rc.3",
-    "ionic-native": "2.2.3",
+"dependencies": {
+    "@angular/common": "2.4.8",
+    "@angular/compiler": "2.4.8",
+    "@angular/compiler-cli": "2.4.8",
+    "@angular/core": "2.4.8",
+    "@angular/forms": "2.4.8",
+    "@angular/http": "2.4.8",
+    "@angular/platform-browser": "2.4.8",
+    "@angular/platform-browser-dynamic": "2.4.8",
+    "@angular/platform-server": "2.4.8",
+    "@ionic/storage": "2.0.0",
+    "ionic-angular": "2.2.0",
+    "ionic-native": "2.4.1",
     "ionicons": "3.0.0",
-    "localforage": "^1.4.3",
-    "lodash": "^4.17.3",
-    "rxjs": "5.0.0-beta.12",
-    "zone.js": "0.6.26"
+    "rxjs": "5.0.1",
+    "sw-toolbox": "3.4.0",
+    "zone.js": "0.7.2"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "0.0.45",
-    "@types/localforage": "0.0.33",
+    "@ionic/app-scripts": "1.1.4",
     "@types/lodash": "4.14.44",
-    "typescript": "2.0.6"
+    "typescript": "2.0.9"
   },
   "cordovaPlugins": [
     "cordova-plugin-whitelist",
