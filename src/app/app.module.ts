@@ -1,5 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { MyApp } from './app.component';
 import { QuranPage, SuraPage, VersePage, MoreOptionsPopoverPage, BookmarkPage, JuzPage, SettingPage } from '../pages/shared';
@@ -40,6 +42,7 @@ import { SettingService } from '../pages/setting/setting.service';
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    StatusBar, SplashScreen, 
     HelperService, DbService, QuranService, EventPublisher, SchemaService, MetaDataService
     , BookmarkService, SuraService, VerseService, JuzService, SettingService
   ]

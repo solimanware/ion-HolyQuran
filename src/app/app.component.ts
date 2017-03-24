@@ -2,7 +2,8 @@ import { Component, ViewChild, OnDestroy, HostBinding } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { SuraPage, BookmarkPage, QuranPage, SettingPage } from '../pages/shared';
 import { QuranService, EventPublisher } from '../shared/shared';
@@ -22,7 +23,7 @@ export class MyApp implements OnDestroy {
   pages: Array<{ title: string, component: any }>;
   subscription: Subscription;
 
-  constructor(public platform: Platform
+  constructor(public platform: Platform, private statusBar: StatusBar, private splashScreen: SplashScreen
     , private quranService: QuranService, private eventPublisher: EventPublisher
     , private settingService: SettingService) {
 
@@ -41,7 +42,7 @@ export class MyApp implements OnDestroy {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      StatusBar.styleDefault();
+      this.statusBar.styleDefault();
 
       this.quranService.syncData(() => {
         this.rootPage = QuranPage;
@@ -54,7 +55,7 @@ export class MyApp implements OnDestroy {
           }
         });
         //hide splash screen
-        Splashscreen.hide();
+        this.splashScreen.hide();
       });
     });
 
