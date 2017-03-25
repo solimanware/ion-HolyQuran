@@ -136,23 +136,23 @@ export class VersePage {
         });
     }
 
-    touchmove(e) {
-        console.log('moving');
-        // Clear the timeout if it has already been set.
-        // This will prevent the previous task from executing
-        // if it has been less than <MILLISECONDS>
-        clearTimeout(this.timeout);
-        // Make a new timeout set to go off in 800ms
-        this.timeout = setTimeout(() => {
-            this.i++;
-            console.log('Input Value');
-        }, 300);
-        // var debounced = _.debounce(() => {
-        //     console.log('debounc');
-        //     this.i++;
-        // }, 5000);
-        // debounced();
-    }
+    // touchmove(e) {
+    //     console.log('moving');
+    //     // Clear the timeout if it has already been set.
+    //     // This will prevent the previous task from executing
+    //     // if it has been less than <MILLISECONDS>
+    //     clearTimeout(this.timeout);
+    //     // Make a new timeout set to go off in 800ms
+    //     this.timeout = setTimeout(() => {
+    //         this.i++;
+    //         console.log('Input Value');
+    //     }, 300);
+    //     // var debounced = _.debounce(() => {
+    //     //     console.log('debounc');
+    //     //     this.i++;
+    //     // }, 5000);
+    //     // debounced();
+    // }
 
     // touchend(e) {
     //     //set font
@@ -218,7 +218,7 @@ export class VersePage {
         let offset = this.getElementOffset(element);
         console.log(offset);
         //its going too far. Let's decrease it.
-        offset.top -= 45;
+        offset.top -= 100;
         this.content.scrollTo(0, offset.top)
         //make current verse selected
         let verseToFind = this.ayas.find((x: Verse) => x.index == this.verseParams.verseIndex);

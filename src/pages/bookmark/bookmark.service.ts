@@ -35,12 +35,12 @@ export class BookmarkService {
         });
     }
 
-    getAllApplicationBookmarks() {
-        return this.getAll().then((bookmarks: Array<Object>) => {
-            bookmarks = _.filter(bookmarks, function (bm: Bookmark) {
+    getAllApplicationBookmarks(): Promise<Array<Bookmark>> {
+        return this.getAll().then((bookmarks: Array<Bookmark>) => {
+            let bookmarkList = _.filter(bookmarks, function (bm: Bookmark) {
                 return bm.type === BookmarkType.Application;
             });
-            return bookmarks;
+            return bookmarkList;
         });
     }
 

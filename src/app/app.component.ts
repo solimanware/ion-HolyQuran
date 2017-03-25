@@ -21,15 +21,15 @@ export class MyApp implements OnDestroy {
   rootPage: any;
   pages: Array<{ title: string, component: any }>;
   subscription: Subscription;
-    private loader;
+    // private loader;
 
   constructor(public platform: Platform, private loadingCtrl: LoadingController
     , private quranService: QuranService, private eventPublisher: EventPublisher
     , private settingService: SettingService) {
     //cache loader
-    this.loader = this.loadingCtrl.create({
-        content: "Please wait..."
-    });
+    // this.loader = this.loadingCtrl.create({
+    //     content: "Please wait..."
+    // });
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -44,10 +44,10 @@ export class MyApp implements OnDestroy {
   initializeApp() {
     this.platform.ready().then(() => {
       StatusBar.styleDefault();
-      this.loader.present();
+      // this.loader.present();
       this.quranService.syncData(() => {
         this.rootPage = QuranPage;
-        this.loader.dismiss();
+        // this.loader.dismiss();
         
         //set font
         this.settingService.get('fontSize').then(fontSize => {
