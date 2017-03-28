@@ -136,6 +136,10 @@ export class VersePage {
         });
     }
 
+    ionViewWillLeave() {
+        this.bookmarkService.removeAllApplicationBookmarks();
+    }
+
     // touchmove(e) {
     //     console.log('moving');
     //     // Clear the timeout if it has already been set.
