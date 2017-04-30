@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 
-import { default as localforage } from "localforage";
-import _ from 'lodash';
-
 import { SchemaService } from './schema.service';
 
 declare var ydn: any; // Magic
@@ -20,7 +17,7 @@ export class DbService {
 
     get Db() {
         return this.db;
-    }
+    } 
 
     put(store: string, opts: any): Promise<any> {
         return new Promise((resolve, reject) => {

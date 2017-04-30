@@ -16,7 +16,7 @@
 </ion-header>
 <ion-content>
     <ion-list no-lines [virtualScroll]="ayas" [approxItemHeight]="approxItemHeight" approxItemWidth="100%" 
-        [bufferRatio]="bufferRatio" class="pq-listview verses-listview">
+        [bufferRatio]="100" class="pq-listview verses-listview">
         <button ion-item detail-none class="pq-listview-item verses-listview-item" *virtualItem="let verse" 
             (click)="bookMarkApplicationVerse(verse, verseDetail)" 
             (press)= "displayVerseActionSheet(verse, verseDetail)" 

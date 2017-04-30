@@ -64,6 +64,8 @@ export class VersePage {
                 let countedBufferRatio = indexToFind / 3;
                 if (countedBufferRatio > this.bufferRatio) {
                     this.bufferRatio = countedBufferRatio;
+                    console.log('bufferRatio');
+                    console.log(this.bufferRatio);
                 }
                 setTimeout(() => {
                     this.scrollTo(this.verseParams.verseIndex);
@@ -217,6 +219,7 @@ export class VersePage {
     private scrollTo(verseIndex: number) {
         let verseKey = '#verse_' + verseIndex;
         console.log(verseKey);
+
         let hElement: HTMLElement = this.content._elementRef.nativeElement;
         let element = hElement.querySelector(verseKey);
         let offset = this.getElementOffset(element);

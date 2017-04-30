@@ -2,7 +2,8 @@ import { Component, ViewChild, OnDestroy, HostBinding } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Nav, Platform, LoadingController } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { SuraPage, BookmarkPage, QuranPage, SettingPage } from '../pages/shared';
 import { QuranService, EventPublisher } from '../shared/shared';
@@ -10,7 +11,8 @@ import { SettingService } from '../pages/setting/setting.service';
 
 @Component({
   selector: 'body',
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [StatusBar, SplashScreen]
 })
 export class MyApp implements OnDestroy {
   private baseFontSize = 14;
@@ -24,6 +26,7 @@ export class MyApp implements OnDestroy {
     // private loader;
 
   constructor(public platform: Platform, private loadingCtrl: LoadingController
+    , private statusBar: StatusBar, private splashScreen: SplashScreen
     , private quranService: QuranService, private eventPublisher: EventPublisher
     , private settingService: SettingService) {
     //cache loader
@@ -43,7 +46,7 @@ export class MyApp implements OnDestroy {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      StatusBar.styleDefault();
+      this.statusBar.styleDefault();
       // this.loader.present();
       this.quranService.syncData(() => {
         this.rootPage = QuranPage;
@@ -58,7 +61,7 @@ export class MyApp implements OnDestroy {
           }
         });
         //hide splash screen
-        Splashscreen.hide();
+        this.splashScreen.hide();
       });
     });
 
