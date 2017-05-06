@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
-import { Content, MenuController, NavController, NavParams, ActionSheetController, PopoverController, LoadingController, AlertController, Gesture } from 'ionic-angular';
+import { Content, Loading, VirtualScroll, MenuController, NavController, NavParams, ActionSheetController, PopoverController, LoadingController, AlertController, Gesture, App } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Subscription';
 
 import { VerseService } from './verse.service';
 import { BookmarkService } from '../bookmark/bookmark.service';
@@ -16,13 +17,15 @@ import { EventPublisher } from '../../shared/shared';
 })
 export class VersePage {
     @ViewChild(Content) content: Content;
+    @ViewChild(VirtualScroll) verseList: VirtualScroll;
+    private subscription: Subscription;
     private verseParams: VerseParams;
-    private loader;
+    private loader: Loading;
     private i = 0;
     // Init a timeout variable to be used below
     private timeout = null;
-    private baseFont = 0;
 
+    public verseFontSize;
     pressGesture: Gesture;
     verseDetail: any;
     ayas: Array<Verse> = [];
@@ -32,7 +35,7 @@ export class VersePage {
 
     constructor(private elRef: ElementRef, private renderer: Renderer, private navCtrl: NavController,
         private navParams: NavParams, private actionSheetCtrl: ActionSheetController, private popoverCtrl: PopoverController,
-        private loadingCtrl: LoadingController, private alertCtrl: AlertController
+        private loadingCtrl: LoadingController, private alertCtrl: AlertController, private app: App
         , private verseService: VerseService, private bookmarkService: BookmarkService, private settingService: SettingService
         , private eventPublisher: EventPublisher, private menu: MenuController) {
         this.verseParams = this.navParams.data;
@@ -42,7 +45,25 @@ export class VersePage {
         });
     }
 
+    ionViewDidLoad() {
+        //font size changed verses page
+        this.subscription = this.eventPublisher.fontSizeChangedVerse$.subscribe(
+            fontSize => {
+                //don't go beyound this otherwise it distrubs the layout
+                if(fontSize >= 14 && fontSize <= 60) {
+                    this.verseFontSize = fontSize;
+                    this.settingService.put('verseFontSize', fontSize);
+                }
+            });
+    }
+
     ionViewWillEnter() {
+        this.settingService.get('verseFontSize').then(verseFontSize => {
+            this.verseFontSize = verseFontSize;
+        });
+    }
+    
+    ionViewDidEnter() {
         this.loader.present();
         this.content.resize();
         // document.getElementById("ion-header")[0].style.display = "none";
@@ -81,23 +102,68 @@ export class VersePage {
         }).catch(() => {
             this.loader.dismiss();
         });
-        // this.pressGesture = new Gesture(this.content._elementRef.nativeElement);
-        // this.pressGesture.listen();
-        // const pinch = Observable.fromEvent(this.pressGesture, 'pinch')
-        //     .debounceTime(500);
-        // pinch.subscribe(e => {
-        //     // if(e.additionalEvent === 'pinchin'){
 
-        //     // } else if(e.additionalEvent === 'pinchout'){
+        
 
-        //     // }
-        // });
+                // setTimeout(() => {
+                //     console.log(e);
+                //     fontSize = fontSize + this.i;
+                //     console.log('touch end' + fontSize);
+                //     this.eventPublisher.fontSizeChanged(fontSize);
+                // }, 350);
+
+                this.pressGesture = new Gesture(this.content._elementRef.nativeElement);
+                this.pressGesture.listen();
+                const pinch = Observable.fromEvent(this.pressGesture, 'pinch')
+                    .debounceTime(200);
+                pinch.subscribe(e => {
+                    this.content.setElementClass('no-scroll', true);
+                    this.loader = this.loadingCtrl.create({
+                        content: "Please wait..."
+                    });
+                    this.loader.present().then(() => {
+                        let args: any = e, fontSize = this.verseFontSize;
+                        console.log(args);
+                        let scale = Math.ceil(args.deltaTime / 60);
+                        console.log('scale: '+ scale);
+                        if(args.additionalEvent === 'pinchout') {
+                            //do not decrease incase we got less value, still increase it abit
+                            //Fix: when sometimes the scale value is less, so it decrease the font
+                            if(scale <= fontSize){
+                                //take the previous value and increase it
+                                fontSize += 2;
+                            } else {
+                                fontSize += (scale);
+                            }
+                        } else if(args.additionalEvent === 'pinchin') {
+                            //same fix as 'pinchout'
+                            if(scale >= fontSize){
+                                //take the previous value and decrease it
+                                fontSize -= 2;
+                            } else {
+                                fontSize -= (scale);
+                            }
+                        }
+                        console.log(fontSize); 
+                        this.eventPublisher.fontSizeChangedVerse(fontSize);
+                        //updated virtual scroll. Must call all following methods
+                        this.verseList.readUpdate(true);
+                        this.verseList.writeUpdate(true);
+                        this.verseList.resize();
+                        setTimeout(() => {
+                            this.loader.dismiss();
+                            this.content.setElementClass('no-scroll', false);
+                        });
+                    });
+                });
+
+        
 
         // this.pressGesture.on('pinch', e => {
-        //     // console.log(e);
-        //     if(e.additionalEvent === 'pinchin'){
+        //     console.log(e);
+        //     if(e.additionalEvent === 'pinchin') {
 
-        //     } else if(e.additionalEvent === 'pinchout'){
+        //     } else if(e.additionalEvent === 'pinchout') {
         //         console.log('pinchout');
         //         // Clear the timeout if it has already been set.
         //         // This will prevent the previous task from executing
@@ -110,34 +176,22 @@ export class VersePage {
         //         }, 1000);
 
         //     }
-        //     // if(e.additionalEvent === 'pinchin'){
-        //     //     console.log('pinchin');
-        //     //     this.i--;
-        //     //     var fontSize = this.baseFont + this.i;
-        //     //     this.eventPublisher.fontSizeChanged(fontSize);
-        //     // } else if(e.additionalEvent === 'pinchout'){
-        //     //     console.log('pinchout');
-        //     //     this.i++;
-        //     //     var fontSize = this.baseFont + this.i;
-        //     //     console.log(this.i);
-        //     //     console.log(fontSize);
-        //     //     this.approxItemHeight = (this.i*10) + "px";
-        //     //     this.eventPublisher.fontSizeChanged(fontSize);
-        //     // }
-        //     // console.log(e);
+            // if(e.additionalEvent === 'pinchin'){
+            //     console.log('pinchin');
+            //     this.i--;
+            //     var fontSize = this.baseFont + this.i;
+            //     this.eventPublisher.fontSizeChanged(fontSize);
+            // } else if(e.additionalEvent === 'pinchout'){
+            //     console.log('pinchout');
+            //     this.i++;
+            //     var fontSize = this.baseFont + this.i;
+            //     console.log(this.i);
+            //     console.log(fontSize);
+            //     this.approxItemHeight = (this.i*10) + "px";
+            //     this.eventPublisher.fontSizeChanged(fontSize);
+            // }
+            // console.log(e);
         // });
-
-        this.settingService.get('fontSize').then(fontSize => {
-            if (fontSize) {
-                this.baseFont = fontSize;
-                // setTimeout(() => {
-                //     console.log(e);
-                //     fontSize = fontSize + this.i;
-                //     console.log('touch end' + fontSize);
-                //     this.eventPublisher.fontSizeChanged(fontSize);
-                // }, 350);
-            }
-        });
     }
 
     ionViewWillLeave() {
@@ -282,5 +336,4 @@ export class VersePage {
         });
         actionSheet.present();
     }
-
 }

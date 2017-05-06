@@ -14,7 +14,7 @@
         </ion-buttons>-->
     </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content [ngStyle]="{'font-size': verseFontSize + 'px'}">
     <ion-list no-lines [virtualScroll]="ayas" [approxItemHeight]="approxItemHeight" approxItemWidth="100%" 
         [bufferRatio]="100" class="pq-listview verses-listview">
         <button ion-item detail-none class="pq-listview-item verses-listview-item" *virtualItem="let verse" 

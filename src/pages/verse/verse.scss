@@ -1,4 +1,10 @@
 page-verse {
+
+    .no-scroll {
+        .scroll-content {
+            overflow: hidden;
+        }
+    }
     .verses-listview {
         direction: rtl;
         font-family: 'KFGQPC Uthmanic Script HAFS';

@@ -60,6 +60,11 @@ export class MyApp implements OnDestroy {
             this.settingService.put('fontSize', this.baseFontSize);
           }
         });
+        this.settingService.get('verseFontSize').then(verseFontSize => {
+          if (!verseFontSize) {
+            this.settingService.put('verseFontSize', this.baseFontSize);
+          }
+        });
         //hide splash screen
         this.splashScreen.hide();
       });

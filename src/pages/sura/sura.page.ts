@@ -51,7 +51,7 @@ export class SuraPage implements OnInit {
             });
     }
 
-    ionViewWillEnter() {
+    ionViewDidEnter() {
         this.loadSuras().then(() => { 
             // let oldClasses = this.content._elementRef.nativeElement.getAttribute('class');
             // oldClasses = oldClasses.replace('hide', '');
