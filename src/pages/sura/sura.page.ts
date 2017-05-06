@@ -33,20 +33,21 @@ export class SuraPage implements OnInit {
             .then((bookmarks: Array<Bookmark>)=> {
                 if(bookmarks.length){
                     let bookmark = bookmarks[0];
+                    this.goToVerses(bookmark.sura, bookmark.index);
                     //load the suras if not loaded as scrollTo will not work untill data is loaded
-                    this.loadSuras().then(()=> {
-                        let indexToFind = this.surahs.findIndex((sura: Sura) => sura.index == bookmark.sura.index);
-                        console.log('sura_index=' + indexToFind);
-                        let countedBufferRatio = indexToFind / 3;
-                        if (countedBufferRatio > this.bufferRatio) {
-                            this.bufferRatio = countedBufferRatio;
-                        }
-                        setTimeout(()=> {
-                            this.scrollTo(bookmark.sura);
-                        });
-                        //intentionally navigate late so that the view is loaded and apeared properly 
-                        this.goToVerses(bookmark.sura, bookmark.index);
-                    });
+                    // this.loadSuras().then(()=> {
+                    //     let indexToFind = this.surahs.findIndex((sura: Sura) => sura.index == bookmark.sura.index);
+                    //     console.log('sura_index=' + indexToFind);
+                    //     let countedBufferRatio = indexToFind / 3;
+                    //     if (countedBufferRatio > this.bufferRatio) {
+                    //         this.bufferRatio = countedBufferRatio;
+                    //     }
+                    //     setTimeout(()=> {
+                    //         this.scrollTo(bookmark.sura);
+                    //     });
+                    //     //intentionally navigate late so that the view is loaded and apeared properly 
+                    //     this.goToVerses(bookmark.sura, bookmark.index);
+                    // });
                 }
             });
     }
