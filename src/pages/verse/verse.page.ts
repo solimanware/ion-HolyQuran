@@ -43,10 +43,11 @@ export class VersePage {
     }
 
     ionViewWillEnter() {
+        this.loader.present();
+        this.content.resize();
         // document.getElementById("ion-header")[0].style.display = "none";
         // this.menu.swipeEnable(false);
         console.log(this.navParams.data);
-        this.loader.present();
         this.verseService.getBySurahId(this.verseParams.suraIndex).then((verse) => {
             this.verseDetail = verse;
             console.log('VerseDetail');
@@ -64,11 +65,14 @@ export class VersePage {
                 let countedBufferRatio = indexToFind / 3;
                 if (countedBufferRatio > this.bufferRatio) {
                     this.bufferRatio = countedBufferRatio;
+                    console.log('bufferRatio');
+                    console.log(this.bufferRatio);
                 }
+                //must be delay otherwise content scroll height isn't calculated properly
                 setTimeout(() => {
                     this.scrollTo(this.verseParams.verseIndex);
                     this.loader.dismiss();
-                });
+                }, 300);
             } else {
                 this.loader.dismiss();
                 //no bookmark ? create current sura and first verse as bookmark
@@ -136,23 +140,27 @@ export class VersePage {
         });
     }
 
-    touchmove(e) {
-        console.log('moving');
-        // Clear the timeout if it has already been set.
-        // This will prevent the previous task from executing
-        // if it has been less than <MILLISECONDS>
-        clearTimeout(this.timeout);
-        // Make a new timeout set to go off in 800ms
-        this.timeout = setTimeout(() => {
-            this.i++;
-            console.log('Input Value');
-        }, 300);
-        // var debounced = _.debounce(() => {
-        //     console.log('debounc');
-        //     this.i++;
-        // }, 5000);
-        // debounced();
+    ionViewWillLeave() {
+        this.bookmarkService.removeAllApplicationBookmarks();
     }
+
+    // touchmove(e) {
+    //     console.log('moving');
+    //     // Clear the timeout if it has already been set.
+    //     // This will prevent the previous task from executing
+    //     // if it has been less than <MILLISECONDS>
+    //     clearTimeout(this.timeout);
+    //     // Make a new timeout set to go off in 800ms
+    //     this.timeout = setTimeout(() => {
+    //         this.i++;
+    //         console.log('Input Value');
+    //     }, 300);
+    //     // var debounced = _.debounce(() => {
+    //     //     console.log('debounc');
+    //     //     this.i++;
+    //     // }, 5000);
+    //     // debounced();
+    // }
 
     // touchend(e) {
     //     //set font
@@ -213,13 +221,14 @@ export class VersePage {
     private scrollTo(verseIndex: number) {
         let verseKey = '#verse_' + verseIndex;
         console.log(verseKey);
+
         let hElement: HTMLElement = this.content._elementRef.nativeElement;
         let element = hElement.querySelector(verseKey);
         let offset = this.getElementOffset(element);
         console.log(offset);
         //its going too far. Let's decrease it.
-        offset.top -= 45;
-        this.content.scrollTo(0, offset.top)
+        offset.top -= 100;
+        this.content.scrollTo(0, offset.top);
         //make current verse selected
         let verseToFind = this.ayas.find((x: Verse) => x.index == this.verseParams.verseIndex);
         this.selectCurrentVerse(verseToFind);
@@ -244,7 +253,7 @@ export class VersePage {
         var box = element.getBoundingClientRect();
         var top = box.top + window.pageYOffset - de.clientTop;
         var left = box.left + window.pageXOffset - de.clientLeft;
-        return { top: top, left: left };
+        return { top:  box.top, left: left }; 
     }
 
     private presentVerseActionSheet(verse: Verse, verseDetail: VerseDetail) {

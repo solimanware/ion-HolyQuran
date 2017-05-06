@@ -35,12 +35,12 @@ export class BookmarkService {
         });
     }
 
-    getAllApplicationBookmarks() {
-        return this.getAll().then((bookmarks: Array<Object>) => {
-            bookmarks = _.filter(bookmarks, function (bm: Bookmark) {
+    getAllApplicationBookmarks(): Promise<Array<Bookmark>> {
+        return this.getAll().then((bookmarks: Array<Bookmark>) => {
+            let bookmarkList = _.filter(bookmarks, function (bm: Bookmark) {
                 return bm.type === BookmarkType.Application;
             });
-            return bookmarks;
+            return bookmarkList;
         });
     }
 
@@ -89,5 +89,23 @@ export class BookmarkService {
         let surahVerseKey = `${bookmark.sura.index}_${bookmark.index}`;
         console.log('remove key: ' + surahVerseKey);
         return this.dbService.remove(this.schemaService.tables.bookmark, surahVerseKey);
+    }
+
+    removeAllApplicationBookmarks() {
+        return new Promise((resolve, reject) => {
+            this.getAllApplicationBookmarks().then((bookmarks: Array<Bookmark>) => {
+                if (bookmarks.length > 0) {
+                    let bookmarkPromises = [];
+                    for (let bookmark of bookmarks) {
+                        bookmarkPromises.push(this.removeBookmark(bookmark));
+                    }
+                    Promise.all(bookmarkPromises).then(() => {
+                            resolve();
+                        });
+                } else {
+                    resolve();
+                }
+            });
+        });
     }
 }

@@ -2,7 +2,8 @@ import { Component, ViewChild, OnDestroy, HostBinding } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Nav, Platform, LoadingController } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { SuraPage, BookmarkPage, QuranPage, SettingPage } from '../pages/shared';
 import { QuranService, EventPublisher } from '../shared/shared';
@@ -10,7 +11,8 @@ import { SettingService } from '../pages/setting/setting.service';
 
 @Component({
   selector: 'body',
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [StatusBar, SplashScreen]
 })
 export class MyApp implements OnDestroy {
   private baseFontSize = 14;
@@ -21,15 +23,16 @@ export class MyApp implements OnDestroy {
   rootPage: any;
   pages: Array<{ title: string, component: any }>;
   subscription: Subscription;
-    private loader;
+    // private loader;
 
   constructor(public platform: Platform, private loadingCtrl: LoadingController
+    , private statusBar: StatusBar, private splashScreen: SplashScreen
     , private quranService: QuranService, private eventPublisher: EventPublisher
     , private settingService: SettingService) {
     //cache loader
-    this.loader = this.loadingCtrl.create({
-        content: "Please wait..."
-    });
+    // this.loader = this.loadingCtrl.create({
+    //     content: "Please wait..."
+    // });
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -43,11 +46,11 @@ export class MyApp implements OnDestroy {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      StatusBar.styleDefault();
-      this.loader.present();
+      this.statusBar.styleDefault();
+      // this.loader.present();
       this.quranService.syncData(() => {
         this.rootPage = QuranPage;
-        this.loader.dismiss();
+        // this.loader.dismiss();
         
         //set font
         this.settingService.get('fontSize').then(fontSize => {
@@ -58,7 +61,7 @@ export class MyApp implements OnDestroy {
           }
         });
         //hide splash screen
-        Splashscreen.hide();
+        this.splashScreen.hide();
       });
     });
 

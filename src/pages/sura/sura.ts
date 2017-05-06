@@ -8,5 +8,6 @@ export interface Sura {
     rukus: string,
     start: string,
     tname: string,
-    type: string
+    type: string,
+    isSelected?: boolean
 }
