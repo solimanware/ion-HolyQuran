@@ -43,10 +43,11 @@ export class VersePage {
     }
 
     ionViewWillEnter() {
+        this.loader.present();
+        this.content.resize();
         // document.getElementById("ion-header")[0].style.display = "none";
         // this.menu.swipeEnable(false);
         console.log(this.navParams.data);
-        this.loader.present();
         this.verseService.getBySurahId(this.verseParams.suraIndex).then((verse) => {
             this.verseDetail = verse;
             console.log('VerseDetail');
@@ -67,10 +68,11 @@ export class VersePage {
                     console.log('bufferRatio');
                     console.log(this.bufferRatio);
                 }
+                //must be delay otherwise content scroll height isn't calculated properly
                 setTimeout(() => {
                     this.scrollTo(this.verseParams.verseIndex);
                     this.loader.dismiss();
-                });
+                }, 300);
             } else {
                 this.loader.dismiss();
                 //no bookmark ? create current sura and first verse as bookmark
@@ -226,7 +228,7 @@ export class VersePage {
         console.log(offset);
         //its going too far. Let's decrease it.
         offset.top -= 100;
-        this.content.scrollTo(0, offset.top)
+        this.content.scrollTo(0, offset.top);
         //make current verse selected
         let verseToFind = this.ayas.find((x: Verse) => x.index == this.verseParams.verseIndex);
         this.selectCurrentVerse(verseToFind);
@@ -251,7 +253,7 @@ export class VersePage {
         var box = element.getBoundingClientRect();
         var top = box.top + window.pageYOffset - de.clientTop;
         var left = box.left + window.pageXOffset - de.clientLeft;
-        return { top: top, left: left };
+        return { top:  box.top, left: left }; 
     }
 
     private presentVerseActionSheet(verse: Verse, verseDetail: VerseDetail) {
