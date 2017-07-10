@@ -92,6 +92,7 @@ export class SuraPage implements OnInit {
             if(!this.surahs.length){
                 this.surahService.getAll().then((surahs: Array<Sura>) => {
                     this.surahs = surahs;
+                    console.log(surahs);
                     resolve();
                 });        
             } else {

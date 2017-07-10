@@ -23,9 +23,14 @@ export class JuzPage implements OnInit {
     }
 
     ngOnInit() {
-        this.juzService.getAll().then((juzs: Array<Juz>) => {
-            console.log(juzs);
+        this.juzService.getAll().then((juzs: Array<Juz>) => {    
             this.juzs = juzs;
+            for(let i =0;i<this.juzs.length;i++){
+                this.suraService.getById(this.juzs[i].sura).then((sura : Sura)=>{
+                    this.juzs[i].suraName = sura.tname;
+                })                
+            }
+            console.log(juzs);
         });
     }
 
